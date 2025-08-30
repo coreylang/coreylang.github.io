@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Christopher 'Corey' Lang - Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1 }
+        50% { opacity: 0 }
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes beigeToGray {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes flicker {
+        0% { opacity: 0; transform: scaleY(0.2); }
+        30% { opacity: 1; transform: scaleY(1.2); }
+        60% { opacity: 0.8; transform: scaleY(0.8); }
+        100% { opacity: 0; transform: scaleY(0); }
+      }
+      a {
+        text-decoration: none;
+      }
+      .typewriter {
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid white;
+        animation: typing 3s steps(30, end), blink 0.7s step-end infinite;
+      }
+      .animated-gradient {
+        background: linear-gradient(270deg, #6b21a8, #3b82f6);
+        background-size: 400% 400%;
+        animation: gradientShift 10s ease infinite;
+      }
+      .animated-sidebar {
+        background: linear-gradient(270deg, #f5f5dc, #d1d5db); /* beige to gray */
+        background-size: 400% 400%;
+        animation: beigeToGray 12s ease infinite;
+      }
+      .glow-link:hover {
+        text-shadow: 0 0 6px #3b82f6, 0 0 12px #3b82f6;
+      }
+      .lightning-bolt {
+        position: absolute;
+        width: 40px;
+        height: 80px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 0 L20 32 H36 L28 64 L44 32 H28 Z' fill='%23facc15'/%3E%3C/svg%3E") no-repeat center;
+        background-size: contain;
+        animation: strike 0.6s ease-out;
+        opacity: 0.9;
+        filter: drop-shadow(0 0 6px #facc15) drop-shadow(0 0 12px #facc15);
+      }
+
+      @keyframes strike {
+        0% { transform: scale(0.5) rotate(10deg); opacity: 0; }
+        30% { transform: scale(1.2) rotate(-10deg); opacity: 1; }
+        60% { transform: scale(0.9) rotate(5deg); opacity: 0.8; }
+        100% { transform: scale(0.5) rotate(0deg); opacity: 0; }
+      }
+    </style>
+    <script>
+      function createLightningBolt() {
+        const bolt = document.createElement('div');
+        bolt.className = 'lightning-bolt';
+
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+
+        bolt.style.left = `${x}px`;
+        bolt.style.top = `${y}px`;
+
+        document.getElementById('lightning-container').appendChild(bolt);
+
+        setTimeout(() => bolt.remove(), 600);
+      }
+
+      setInterval(() => {
+        if (Math.random() < 0.3) createLightningBolt();
+      }, 100);
+    </script>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans antialiased">
+    <div class="max-w-6xl mx-auto mt-10 bg-white shadow-md rounded-lg grid grid-cols-1 md:grid-cols-3">
+      <!-- Left Column: Personal Info -->
+      <aside class="md:col-span-1 text-white px-6 pt-8 pb-6 rounded-tl-lg rounded-bl-lg space-y-6 animated-sidebar">
+        <!-- <div class="text-center">
+          <h3 class="text-2xl font-bold text-gray-900">Christopher "Corey" Lang</h3>
+          <p class="text-lg text-gray-600">Software Engineer</p>
+        </div> -->
+        <div class="text-sm text-gray-700 space-y-1">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Contact</h2>
+          <p>📍 Shawnee, KS</p>
+          <p>📞 (913) 952-7686</p>
+          <p>📧 coreylang.dev@gmail.com</p>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Profile</h2>
+          <ul class="list-disc list-inside text-gray-700 text-sm">
+            <li>Goes by middle name "Corey"</li>
+            <li>Born February 5th, 1985</li>
+            <li>16+ years of professional development experience</li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Skills</h2>
+          <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+            <li>LAMP, HTML, CSS, JS, PHP, Python</li>
+            <li>C, C++, Perl, CodeIgniter, Laravel</li>
+            <li>Node.js, React, Angular, TypeScript</li>
+            <li>MySQL, MariaDB, Linux, Windows</li>
+            <li>Google Cloud, AWS, Apache</li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Education</h2>
+          <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+            <li>PayPal Certified Developer (2010)</li>
+            <li>JCCC – Computer Engineering (2003–2005)</li>
+            <li>SM Northwest High School (1999–2003)</li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">References</h2>
+          <ul class="text-gray-700 text-sm space-y-2">
+            <li><strong>Andrew Angell</strong> – (816) 919-0688 · andrew@angelleye.com</li>
+            <li><strong>Bob Lansink</strong> – (214) 673-6702 · bob@afcamail.com</li>
+            <li><strong>Patrick Russo</strong> – patrick.russo@novatechautomation.com</li>
+            <li><strong>Robert Brunkow</strong> – (913) 624-0524 · rbrunkowaftkc@gmail.com</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Right Column: Timeline -->
+      <main class="md:col-span-2">
+        <section id="lightning-container" class="animated-gradient py-7 px-6 text-center text-white rounded-tr-lg">
+          <!-- Background Code Snippet -->
+          <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graph-paper.png')] bg-repeat"></div>
+
+          <!-- Hero Content -->
+          <div class="relative z-10">
+            <h1 class="text-5xl font-bold mb-6 tracking-tight antialiased relative z-10 text-white animate-colorShift"
+                style="text-shadow: 2px 2px 0 #1e3a8a, 4px 4px 0 #9333ea;">
+              Christopher "Corey" Lang
+            </h1>
+            <p class="text-xl font-medium mb-4 typewriter w-fit mx-auto">
+              Software Engineer
+            </p>
+            <p class="text-sm text-gray-200 italic">
+              <span class="text-green-400">~/projects</span> $ npm run build
+            </p>
+          </div>
+        </section>
+        <section class="p-6">
+          <h2 class="text-2xl font-bold text-gray-900 mb-1">Job History & Projects</h2>
+        </section>
+        <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
+          <div class="relative border-l-4 border-gray-300 pl-6 space-y-12">
+            
+            <!-- AFCA -->
+            <div class="relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-purple-600 rounded-full border-4 border-white"></div>
+              <time class="text-xs text-gray-500 uppercase tracking-wide">2025</time>
+              <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
+              <p class="text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li>Designed and developed a Conversational AI voice call system.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
+                </li>
+                <li>
+                  Designed and developed LAMS (Legal Aid Management) system for a group of legal companies.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
+                </li>
+                <li>
+                  Set up and configured new compute virtual machines on GPC to serve LAMS.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[cPanel, AlmaLinux]</span>
+                </li>
+                <li>Lead a team of 4 developers. Code review and support.</li>
+              </ul>
+            </div>
+
+            <!-- Novatech -->
+            <div class="relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-blue-600 rounded-full border-4 border-white"></div>
+              <time class="text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
+              <h3 class="text-xl font-semibold text-gray-800">NovaTech</h3>
+              <p class="text-sm text-gray-600">Web Developer Engineer <a href="https://novatechautomation.com" class="text-blue-600">novatechautomation.com</a></p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li>
+                  Designed, developed, and maintained the Orion python, cherrypy, postgres sql web application. The web application configures and manages Orion product hardware servers.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, PostgreSQL, Cherrypy, HTML5, CSS3, Bootstrap, jQuery]</span>
+                </li>
+                <li>
+                  Designed, developed, and maintained the Kronos satellite clock python, flask, web application. The web application configures and manages Kronos satellite hardware servers.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, Flask, HTML5, CSS3, Bootstrap, jQuery]</span>
+                </li>
+                <li>
+                  Designed, developed, and maintained the NovaTech product support website. The website allowed for customers to sign in via email (or legacy username credentials) and download NovaTech firmware updates.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, MySQL, Django, HTML5, CSS3, TailwindCSS, jQuery]</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- AFCA -->
+            <div class="relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
+              <time class="text-xs text-gray-500 uppercase tracking-wide">2011 - 2020</time>
+              <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
+              <p class="text-sm text-gray-600">Lead Full Stack Developer <a href="https://angelleye.com" class="text-blue-600">afca.io</a></p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 mb-4 text-sm">
+                <li>Built and maintained web applications for profit and non-profit law businesses.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span></li>
+                <li>Provided technical support for all applications daily, Monday through Sunday.</li>
+                <li>Delivered onsite networking and computer support at AFCA Houston office.</li>
+                <li>Taught and trained paid interns at AFCA’s Iowa State University campus office in 2015.</li>
+                <li>Managed and lead a team of 4 developers, including code review and mentoring.</li>
+              </ul>
+              <h4 class="text-md font-semibold text-gray-800 mb-2">Legal Aid Management System (LAMS)</h4>
+              <p class="text-gray-700 mb-4 text-sm">
+                LAMS is a private PHP application built on the CodeIgniter framework, designed to streamline daily operations for law firms. It runs on Google Cloud Platform, stores data in MySQL and Redis, and includes components written in C#, JavaScript, Python, and Google Scripts. Access is restricted to authorized devices.
+              </p>
+              <ul class="list-disc list-inside text-gray-700 text-sm mb-2">
+                <li>Contact and client data</li>
+                <li>Client case data</li>
+                <li>Manual and automatic billing</li>
+                <li>User/Employee time tracking</li>
+                <li>Document management and filing system</li>
+                <li>Legal document drafting and generation</li>
+                <li>Full VOIP call system</li>
+                <li>Dynamic client portal and data entry</li>
+                <li>Work queues and attorney consultations</li>
+                <li>Business and efficiency reports</li>
+                <li>And many more...</li>
+              </ul>
+              <h3 class="text-md font-semibold text-gray-800 mb-2">Other Applications Built at AFCA</h3>
+              <ul class="list-disc list-inside text-gray-700 text-sm">
+                <li>
+                  <strong>Filemation</strong> – Document organizer for cloud repositories like Dropbox, Box, GDrive.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP]</span>
+                </li>
+                <li>
+                  <strong>TxLRS Lawyers</strong> – Texas Lawyer Referral Service platform.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://txlrs.org" class="text-blue-600 underline hover:text-blue-800 text-sm">txlrs.org</a><br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://txlrs-lawyers.org" class="text-blue-600 underline hover:text-blue-800 text-sm">txlrs-lawyers.org</a><br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP]</span>
+                </li>
+                <li>
+                  <strong>Sign Pen Free</strong> – Electronic document signing app similar to DocuSign.<br/>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, React]</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Angell EYE -->
+            <div class="relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
+              <time class="text-xs text-gray-500 uppercase tracking-wide">2009 - 2011</time>
+              <h3 class="text-xl font-semibold text-gray-800">Angell EYE</h3>
+              <p class="text-sm text-gray-600">Lead Developer <a href="https://angelleye.com" class="text-blue-600">angelleye.com</a></p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li>Developed on numerous software applications, even older applications built with FileMaker Pro.</li>
+                <li>Specialized in payment integrations and worked closely with PayPal.</li>
+                <li>Managed and lead a team of 4 developers. Code review and support.</li>
+                <li>Performed many roles such as software developer, project manager, and business accounting.</li>
+                <li>Tested and received Certified PayPal Developer certification.</li>
+              </ul>
+            </div>
+
+            <!-- Personal Projects -->
+            <div class="relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-yellow-500 rounded-full border-4 border-white"></div>
+              <time class="text-xs text-gray-500 uppercase tracking-wide">1998 - 2025</time>
+              <h3 class="text-xl font-semibold text-gray-800">Personal Projects</h3>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li><strong>AOL</strong> – Worked with Microsoft VB 3, and Microsoft VB 4 to develop Windows 95 programs which communicated with the America Online (AOL) instant messager API.</li>
+                <li><strong>PHP ElevenLabs AI</strong> – PHP ElevenLabs AI library package</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+        </div>
+      </main>
+    </div>
+    <footer class="mt-16 border-t border-gray-300 pt-6 pb-12 text-center text-sm text-gray-500">
+      <!-- GitHub Link with Icon -->
+      <p class="mb-2 inline-flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.26.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.082-.729.082-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 3.492.996.108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.047.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.102.823 2.222v3.293c0 .32.218.694.825.576C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        <a href="https://github.com/coreylang" target="_blank" class="text-blue-600 hover:text-blue-800">
+          View my work on GitHub
+        </a>
+      </p>
+
+      <!-- Resume Download -->
+      <p class="mb-2">
+        <a href="./Christopher_Lang_Resume_08282025.pdf" download class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium glow-link">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 4v8" />
+          </svg>
+          Download Resume (PDF)
+        </a>
+      </p>
+
+      <!-- Creative Commons License -->
+      <p>
+        © 2025 Christopher "Corey" Lang. Licensed under 
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 hover:text-blue-800">
+          CC BY-SA 4.0
+        </a>.
+      </p>
+    </footer>
+  </body>
+</html>
