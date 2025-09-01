@@ -43,6 +43,9 @@
         60% { opacity: 0.8; transform: scaleY(0.8); }
         100% { opacity: 0; transform: scaleY(0); }
       }
+      body {
+        overflow-x: hidden;
+      }
       a {
         text-decoration: none;
       }
@@ -75,6 +78,9 @@
         opacity: 0.9;
         filter: drop-shadow(0 0 6px #facc15) drop-shadow(0 0 12px #facc15);
       }
+      h1.full-name {
+        text-shadow: 2px 2px 0 #1e3a8a, 4px 4px 0 #9333ea;
+      } 
 
       @keyframes strike {
         0% { transform: scale(0.5) rotate(10deg); opacity: 0; }
@@ -84,6 +90,47 @@
       }
     </style>
     <script>
+      function parseResumeToJSON() {
+        const jsonView = document.getElementById('json-view');
+        if (jsonView.innerHTML) {
+          jsonView.innerHTML = '';
+          jsonView.style.display = 'hidden';
+          return;
+        }
+
+        const resume = {};
+        const name = document.querySelector('h1.full-name')?.textContent.trim();
+        const title = document.querySelector('p.title')?.textContent.trim();
+        resume.name = name;
+        resume.title = title;
+
+        const jobSections = document.querySelectorAll('.job');
+        resume.jobs = [];
+
+        jobSections.forEach(section => {
+          const heading = section.querySelector('h3').textContent.trim();
+          const jobTimeline = section.querySelector('time.job-timeline').textContent.trim();
+          const jobTitle = section.querySelector('p.job-title')?.textContent.trim();
+          const bullets = Array.from(section.querySelectorAll('ul > li')).map(li => li.textContent.trim());
+
+          if (heading && bullets.length) {
+            resume.jobs.push({
+              role: heading,
+              roleTimeline: jobTimeline,
+              roleTitle: jobTitle,
+              responsibilities: bullets
+            });
+          }
+        });
+
+        const output = document.createElement('pre');
+        output.className = 'w-1/2 mx-auto bg-gray-800 text-gray-100 p-4 rounded text-xs overflow-x-auto mt-3 mb-6 text-left';
+        output.innerHTML = JSON.stringify(resume, null, 2)
+                          .replaceAll('\\n', '<br/>');
+        jsonView.appendChild(output);
+        jsonView.style.display = 'block';
+      }
+
       function createLightningBolt() {
         const bolt = document.createElement('div');
         bolt.className = 'lightning-bolt';
@@ -159,15 +206,14 @@
       <main class="md:col-span-2">
         <section id="lightning-container" class="animated-gradient py-7 px-6 text-center text-white rounded-tr-lg">
           <!-- Background Code Snippet -->
-          <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/graph-paper.png')] bg-repeat"></div>
+          <div class="absolute inset-0 opacity-10"></div>
 
           <!-- Hero Content -->
           <div class="relative z-10">
-            <h1 class="text-5xl font-bold mb-6 tracking-tight antialiased relative z-10 text-white animate-colorShift"
-                style="text-shadow: 2px 2px 0 #1e3a8a, 4px 4px 0 #9333ea;">
+            <h1 class="full-name text-5xl font-bold mb-6 tracking-tight antialiased relative z-10 text-white animate-colorShift">
               Christopher "Corey" Lang
             </h1>
-            <p class="text-xl font-medium mb-4 typewriter w-fit mx-auto">
+            <p class="title text-xl font-medium mb-4 typewriter w-fit mx-auto">
               Software Engineer
             </p>
             <p class="text-sm text-gray-200 italic">
@@ -182,11 +228,11 @@
           <div class="relative border-l-4 border-gray-300 pl-6 space-y-12">
             
             <!-- AFCA -->
-            <div class="relative">
+            <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-purple-600 rounded-full border-4 border-white"></div>
-              <time class="text-xs text-gray-500 uppercase tracking-wide">2025</time>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2025</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
-              <p class="text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
                 <li>Designed and developed a Conversational AI voice call system.<br/>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
@@ -204,11 +250,11 @@
             </div>
 
             <!-- Novatech -->
-            <div class="relative">
+            <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-blue-600 rounded-full border-4 border-white"></div>
-              <time class="text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">NovaTech</h3>
-              <p class="text-sm text-gray-600">Web Developer Engineer <a href="https://novatechautomation.com" class="text-blue-600">novatechautomation.com</a></p>
+              <p class="job-title text-sm text-gray-600">Web Developer Engineer <a href="https://novatechautomation.com" class="text-blue-600">novatechautomation.com</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
                 <li>
                   Designed, developed, and maintained the Orion python, cherrypy, postgres sql web application. The web application configures and manages Orion product hardware servers.<br/>
@@ -226,11 +272,11 @@
             </div>
 
             <!-- AFCA -->
-            <div class="relative">
+            <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
-              <time class="text-xs text-gray-500 uppercase tracking-wide">2011 - 2020</time>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2011 - 2020</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
-              <p class="text-sm text-gray-600">Lead Full Stack Developer <a href="https://angelleye.com" class="text-blue-600">afca.io</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 mb-4 text-sm">
                 <li>Built and maintained web applications for profit and non-profit law businesses.<br/>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span></li>
@@ -276,11 +322,11 @@
             </div>
 
             <!-- Angell EYE -->
-            <div class="relative">
+            <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
-              <time class="text-xs text-gray-500 uppercase tracking-wide">2009 - 2011</time>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2009 - 2011</time>
               <h3 class="text-xl font-semibold text-gray-800">Angell EYE</h3>
-              <p class="text-sm text-gray-600">Lead Developer <a href="https://angelleye.com" class="text-blue-600">angelleye.com</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Developer <a href="https://angelleye.com" class="text-blue-600">angelleye.com</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
                 <li>Developed on numerous software applications, even older applications built with FileMaker Pro.</li>
                 <li>Specialized in payment integrations and worked closely with PayPal.</li>
@@ -291,9 +337,9 @@
             </div>
 
             <!-- Personal Projects -->
-            <div class="relative">
+            <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-yellow-500 rounded-full border-4 border-white"></div>
-              <time class="text-xs text-gray-500 uppercase tracking-wide">1998 - 2025</time>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">1998 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">Personal Projects</h3>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
                 <li><strong>AOL</strong> – Worked with Microsoft VB 3, and Microsoft VB 4 to develop Windows 95 programs which communicated with the America Online (AOL) instant messager API.</li>
@@ -303,31 +349,36 @@
 
           </div>
         </section>
-        </div>
+
       </main>
     </div>
     <footer class="mt-16 border-t border-gray-300 pt-6 pb-12 text-center text-sm text-gray-500">
-      <!-- GitHub Link with Icon -->
-      <p class="mb-2 inline-flex items-center justify-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.26.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.082-.729.082-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 3.492.996.108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.047.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.102.823 2.222v3.293c0 .32.218.694.825.576C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        <a href="https://github.com/coreylang" target="_blank" class="text-blue-600 hover:text-blue-800">
+      <p class="mb-2">
+        <a href="https://github.com/coreylang" target="_blank" class="inline-flex items-center justify-center gap-2 text-blue-600 hover:text-blue-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.26.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.082-.729.082-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.807 1.304 3.492.996.108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.047.138 3.003.404 2.29-1.552 3.296-1.23 3.296-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.804 5.625-5.475 5.92.43.37.823 1.102.823 2.222v3.293c0 .32.218.694.825.576C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
           View my work on GitHub
         </a>
       </p>
-
-      <!-- Resume Download -->
       <p class="mb-2">
         <a href="./Christopher_Lang_Resume_08282025.pdf" download class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium glow-link">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 4v8" />
           </svg>
           Download Resume (PDF)
         </a>
       </p>
-
-      <!-- Creative Commons License -->
+      <p class="mb-2">
+        <a class="inline-flex items-center grap-2 text-blue-600 hover:text-blue-800 cursor-pointer"
+          onclick="parseResumeToJSON()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 transition-transform duration-300 hover:scale-110 hover:text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+            <text x="4" y="16" font-size="16" font-family="monospace" fill="currentColor">{}</text>
+          </svg>
+          View Resume as JSON
+        </a>
+        <p id="json-view"></p>
+      </p>
       <p>
         © 2025 Christopher "Corey" Lang. Licensed under 
         <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 hover:text-blue-800">
