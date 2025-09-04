@@ -52,12 +52,30 @@
         60% { opacity: 0.8; transform: scaleY(0.8); }
         100% { opacity: 0; transform: scaleY(0); }
       }
+
+      @layer utilities {
+        .page-break { page-break-before: always; }
+      }
+      @layer base {
+        @media print {
+          body {
+            font-size: 12pt;
+            line-height: 1.4;
+          }
+          a::after {
+            /* content: " (" attr(href) ")"; */
+            font-size: 10pt;
+          }
+        }
+      }
+
       body {
         overflow-x: hidden;
       }
       a {
         text-decoration: none;
       }
+
       .typewriter {
         overflow: hidden;
         white-space: nowrap;
@@ -89,7 +107,10 @@
       }
       h1.full-name {
         text-shadow: 2px 2px 0 #1e3a8a, 4px 4px 0 #9333ea;
-      } 
+      }
+      .tech-stack {
+        padding-left: 19px;
+      }
 
       @keyframes strike {
         0% { transform: scale(0.5) rotate(10deg); opacity: 0; }
@@ -230,62 +251,89 @@
               <div class="absolute -left-9 top-1 w-5 h-5 bg-purple-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2025</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
-              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer — <a href="https://afca.io" target="_blank" class="text-blue-600">afca.io</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
-                <li>Designed and developed a Conversational AI voice call system.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
+                <li>Architected and deployed a scalable conversational AI voice call platform leveraging speech recognition APIs for seamless automation.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
+                </li>
+                <li>Architected and implemented a conversational AI API using PHP CodeIgniter to enable seamless, automated interactions.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
                 </li>
                 <li>
-                  Designed and developed LAMS (Legal Aid Management) system for a group of legal companies.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
+                  Enhanced and maintained the Legal Aid Management System (LAMS) for a consortium of legal firms, improving functionality and operational efficiency.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
                 </li>
                 <li>
-                  Set up and configured new compute virtual machines on GPC to serve LAMS.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[cPanel, AlmaLinux]</span>
+                  Provisioned and configured new Compute Engine virtual machines on Google Cloud Platform (GCP) to support the Legal Aid Management System (LAMS).<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[cPanel, AlmaLinux]</span>
                 </li>
-                <li>Lead a team of 4 developers. Code review and support.</li>
+                <li>Led a team of four developers, providing code reviews, technical guidance, and ongoing support to ensure high‑quality deliverables.</li>
               </ul>
             </div>
 
-            <!-- Novatech -->
+            <!-- NovaTech -->
             <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-blue-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">NovaTech</h3>
-              <p class="job-title text-sm text-gray-600">Web Developer Engineer <a href="https://novatechautomation.com" class="text-blue-600">novatechautomation.com</a></p>
+              <p class="job-title text-sm text-gray-600">Web Developer Engineer — <a href="https://novatechautomation.com" target="_blank" class="text-blue-600">novatechautomation.com</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
                 <li>
-                  Designed, developed, and maintained the Orion python, cherrypy, postgres sql web application. The web application configures and manages Orion product hardware servers.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, PostgreSQL, Cherrypy, HTML5, CSS3, Bootstrap, jQuery]</span>
+                  Designed, developed, and maintained the Orion web application—built with Python, CherryPy, and PostgreSQL to configure and manage Orion product hardware servers.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, PostgreSQL, Cherrypy, HTML5, CSS3, Bootstrap, jQuery]</span>
                 </li>
                 <li>
-                  Designed, developed, and maintained the Kronos satellite clock python, flask, web application. The web application configures and manages Kronos satellite hardware servers.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, Flask, HTML5, CSS3, Bootstrap, jQuery]</span>
+                  Designed, developed, and maintained the Kronos Satellite Clock web application—built with Python and Flask to configure and manage Kronos satellite hardware servers.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, Flask, HTML5, CSS3, Bootstrap, jQuery]</span>
                 </li>
                 <li>
-                  Designed, developed, and maintained the NovaTech product support website. The website allowed for customers to sign in via email (or legacy username credentials) and download NovaTech firmware updates.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, Python, MySQL, Django, HTML5, CSS3, TailwindCSS, jQuery]</span>
+                  Designed, developed, and maintained the NovaTech product support website, enabling customers to authenticate via email or legacy credentials and securely download firmware updates.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, MySQL, Django, HTML5, CSS3, TailwindCSS, jQuery]</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- The Lead Group -->
+            <div class="job relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
+              <h3 class="text-xl font-semibold text-gray-800">The Lead Group</h3>
+              <p class="job-title text-sm text-gray-600">Full Stack Developer — <a href="https://theleadgroup.com" target="_blank" class="text-blue-600">theleadgroup.com</a></p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li>
+                  Developed, and maintained multiple PHP Laravel–based analytical applications to support data-driven decision-making.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, VueJS, jQuery]</span>
+                </li>
+                <li>
+                  Developed, and enhanced a lead‑generation API utilizing PHP Laravel to improve performance and scalability.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Laravel]</span>
+                </li>
+                <li>
+                  Developed, and maintained multiple front‑end lead‑generation websites to enhance user engagement and conversion rates.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[React, Javascript, Typescript, HTML5, CSS3]</span>
                 </li>
               </ul>
             </div>
 
             <!-- AFCA -->
             <div class="job relative">
-              <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-red-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2011 - 2020</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
-              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer <a href="https://afca.io" class="text-blue-600">afca.io</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Full Stack Developer — <a href="https://afca.io" target="_blank" class="text-blue-600">afca.io</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 mb-4 text-sm">
-                <li>Built and maintained web applications for profit and non-profit law businesses.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span></li>
-                <li>Provided technical support for all applications daily, Monday through Sunday.</li>
-                <li>Delivered onsite networking and computer support at AFCA Houston office.</li>
-                <li>Taught and trained paid interns at AFCA’s Iowa State University campus office in 2015.</li>
-                <li>Managed and lead a team of 4 developers, including code review and mentoring.</li>
+                <li>Developed and maintained web applications for both for‑profit and non‑profit law firms, supporting their operational and client service needs.<br/>
+                  <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span>
+                </li>
+                <li>Provided daily technical support for all applications. Monday thru Sunday.</li>
+                <li>Provided on‑site networking and IT support at AFCA’s Houston office, ensuring reliable system performance and minimal downtime.</li>
+                <li>Provided instruction and hands‑on training to paid interns at AFCA’s Iowa State University campus office in 2015.</li>
+                <li>Led and managed a team of four developers, providing code reviews, mentorship, and technical guidance to ensure high‑quality deliverables.</li>
               </ul>
               <h4 class="text-md font-semibold text-gray-800 mb-2">Legal Aid Management System (LAMS)</h4>
               <p class="text-gray-700 mb-4 text-sm">
-                LAMS is a private PHP application built on the CodeIgniter framework, designed to streamline daily operations for law firms. It runs on Google Cloud Platform, stores data in MySQL and Redis, and includes components written in C#, JavaScript, Python, and Google Scripts. Access is restricted to authorized devices.
+                The Legal Aid Management System (LAMS) is a PHP application built on the CodeIgniter framework to streamline daily operations for law firms. Hosted on Google Cloud Platform, 
+                it leverages MySQL and Redis for data storage and incorporates components developed in PHP, C#, JavaScript, Python, and Google Apps Script. Some of the application features include:
               </p>
               <ul class="list-disc list-inside text-gray-700 text-sm mb-2">
                 <li>Contact and client data</li>
@@ -304,49 +352,63 @@
               <ul class="list-disc list-inside text-gray-700 text-sm">
                 <li>
                   <strong>Filemation</strong> – Document organizer for cloud repositories like Dropbox, Box, GDrive.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP]</span>
+                  <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
                 </li>
                 <li>
                   <strong>TxLRS Lawyers</strong> – Texas Lawyer Referral Service platform.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://txlrs.org" class="text-blue-600 underline hover:text-blue-800 text-sm">txlrs.org</a><br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://txlrs-lawyers.org" class="text-blue-600 underline hover:text-blue-800 text-sm">txlrs-lawyers.org</a><br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP]</span>
+                  <a href="https://txlrs.org" class="tech-stack text-blue-600 hover:text-blue-800 text-sm">txlrs.org</a><br/>
+                  <a href="https://txlrs-lawyers.org" class="tech-stack text-blue-600 hover:text-blue-800 text-sm">txlrs-lawyers.org</a><br/>
+                  <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
                 </li>
                 <li>
                   <strong>Sign Pen Free</strong> – Electronic document signing app similar to DocuSign.<br/>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, React]</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, React, HTML5, CSS3]</span>
                 </li>
               </ul>
             </div>
 
             <!-- Angell EYE -->
             <div class="job relative">
-              <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-orange-500 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2009 - 2011</time>
               <h3 class="text-xl font-semibold text-gray-800">Angell EYE</h3>
-              <p class="job-title text-sm text-gray-600">Lead Developer <a href="https://angelleye.com" class="text-blue-600">angelleye.com</a></p>
+              <p class="job-title text-sm text-gray-600">Lead Developer — <a href="https://angelleye.com" target="_blank" class="text-blue-600">angelleye.com</a></p>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
-                <li>Developed on numerous software applications, even older applications built with FileMaker Pro.</li>
-                <li>Specialized in payment integrations and worked closely with PayPal.</li>
-                <li>Managed and lead a team of 4 developers. Code review and support.</li>
-                <li>Performed many roles such as software developer, project manager, and business accounting.</li>
-                <li>Tested and received Certified PayPal Developer certification.</li>
+                <li>Developed and maintained a wide range of software applications, including legacy systems built with FileMaker Pro.</li>
+                <li>Specialized in payment gateway integrations, collaborating closely with PayPal to deliver secure and seamless transaction solutions.</li>
+                <li>Led and managed a team of four developers, conducting code reviews and providing technical support to ensure high‑quality deliverables.</li>
+                <li>Fulfilled multiple roles, including software developer, project manager, and business accountant, to support diverse operational and technical needs.</li>
+                <li>Earned the Certified PayPal Developer credential after successfully completing all required testing and evaluation.</li>
+              </ul>
+            </div>
+
+            <!-- Freelance/Contract Development -->
+            <div class="job relative">
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-orange-500 rounded-full border-4 border-white"></div>
+              <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2000 - 2009</time>
+              <h3 class="text-xl font-semibold text-gray-800">Freelance</h3>
+              <p class="job-title text-sm text-gray-600">Contractor</p>
+              <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
+                <li>Designed and developed a variety of websites and web applications between 2002 and 2009, utilizing HTML, CSS, CGI‑Perl, PHP, .NET, SQL, and Java.</li>
+                <li>Served as team leader and lead developer for the inaugural Shawnee Mission Northwest High School website from 2000 to 2003.</li>
               </ul>
             </div>
 
             <!-- Personal Projects -->
             <div class="job relative">
-              <div class="absolute -left-9 top-1 w-5 h-5 bg-yellow-500 rounded-full border-4 border-white"></div>
+              <div class="absolute -left-9 top-1 w-5 h-5 bg-yellow-400 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">1998 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">Personal Projects</h3>
               <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
-                <li><strong>AOL</strong> – Worked with Microsoft VB 3, and Microsoft VB 4 to develop Windows 95 programs which communicated with the America Online (AOL) instant messager API.</li>
-                <li><strong>PHP ElevenLabs AI</strong> – PHP ElevenLabs AI library package</li>
+                <li><strong>AOL</strong> – Developed Windows 95–98 applications using Microsoft Visual Basic 3 and 4, integrating with the America Online (AOL) Instant Messenger API for real‑time communication.</li>
+                <li>
+                  <strong>PHP ElevenLabs AI</strong> – PHP ElevenLabs AI library package<br/>
+                  <a href="https://coreylang.github.io/php-elevenlabs-ai/" target="_blank" class="tech-stack text-blue-600 hover:text-blue-800 text-sm">coreylang.github.io/php-elevenlabs-ai/</a>
+                </li>
               </ul>
             </div>
           </div>
         </section>
-
       </main>
     </div>
     <footer class="mt-16 border-t border-gray-300 pt-6 pb-12 text-center text-sm text-gray-500 print:hidden">
@@ -364,6 +426,18 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 4v8" />
           </svg>
           Download Resume (PDF)
+        </a>
+      </p>
+      <p class="mb-2">
+        <a href="#" 
+            onclick="window.print(); return false;" 
+            class="inline-flex items-center gap-2 text-blue-600 hover:underline">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9V2h12v7"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          <span>Print friendly Resume</span>
         </a>
       </p>
       <p class="mb-2">
@@ -386,31 +460,202 @@
     <div class="hidden print:block">
       <header>
         <section>
-          <h1 class="text-3xl font-bold text-center">Christopher Corey Lang</h1>
+          <h1 class="text-3xl font-bold text-center">Corey Lang</h1>
           <p class="title text-xl font-medium mb-4 w-fit mx-auto">
             Software Engineer
           </p>
+          <div class="flex items-center gap-3 text-sm text-gray-800 justify-center">
+            <div class="inline-flex items-center gap-2 hover:underline">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M8 0C5.243 0 3 2.243 3 5c0 3.5 5 9 5 9s5-5.5 5-9c0-2.757-2.243-5-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+              </svg>
+              <span>Shawnee, KS</span>
+            </div>
+            <span class="opacity-40" aria-hidden="true">•</span>
+            <div class="inline-flex items-center gap-2 hover:underline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>coreylang.dev@gmail.com</span>
+            </div>
+            <span class="opacity-40" aria-hidden="true">•</span>
+            <div class="inline-flex items-center gap-2 hover:underline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+                <rect x="7" y="2" width="10" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12" y2="18"/>
+              </svg>
+              <span>(913) 952-7686</span>
+            </div>
+          </div>
         </section>
       </header>
       <main>
-        <section>
-          <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
-          <p class="text-sm text-gray-600">Lead Full Stack Developer</p>
-          <time class="text-xs text-gray-500 uppercase tracking-wide">2025</time>
-          <ul class="list-disc list-inside text-gray-700 mt-2 text-sm">
-            <li>Designed and developed a Conversational AI voice call system.<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
-            </li>
-            <li>
-              Designed and developed LAMS (Legal Aid Management) system for a group of legal companies.<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
-            </li>
-            <li>
-              Set up and configured new compute virtual machines on GPC to serve LAMS.<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-400 text-xs">[cPanel, AlmaLinux]</span>
-            </li>
-            <li>Lead a team of 4 developers. Code review and support.</li>
-          </ul>
+        <section class="max-w-3xl mx-auto p-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Professional Summary</h2>
+          <p class="mt-2">
+            Full-stack developer with expertise in PHP, Python, React, JavaScript, C#, and Node.js. Skilled in creating web applications, RESTful APIs, web services, integrating secure payment systems, and crafting polished, animated UI/UX experiences.
+          </p>
+        </section>
+        <section class="max-w-3xl mx-auto p-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Skills</h2>
+          <div class="grid grid-cols-2 gap-4 mt-2">
+            <div>
+              <h3 class="font-medium">Frontend</h3>
+              <ul class="list-disc list-inside">
+                <li>HTML5, CSS3, jQuery</li>
+                <li>React, JavaScript, TypeScript</li>
+                <li>TailwindCSS, Vite, VueJS</li>
+                <li>Angular</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium">Backend</h3>
+              <ul class="list-disc list-inside">
+                <li>PHP, CodeIgniter, Laravel</li>
+                <li>Python, Django, Flask</li>
+                <li>Remix, Node.js, Express, Fastify</li>
+                <li>.NET C#</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium">DevOps / Tools</h3>
+              <ul class="list-disc list-inside">
+                <li>Linux, Windows</li>
+                <li>Git, Docker, CI/CD</li>
+                <li>GitHub Actions</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-medium">Design</h3>
+              <ul class="list-disc list-inside">
+                <li>Figma, SVG, Branding</li>
+                <li>Animated UI/UX</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section class="max-w-3xl mx-auto p-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Professional Experience</h2>
+          <div class="mt-4">
+            <h3 class="font-medium">Lead Full Stack Developer — AFCA <span class="text-sm text-gray-600">(2025–Present)</span></h3>
+            <ul class="list-disc list-inside mt-1 text-sm">
+                <li>Architected and deployed a scalable conversational AI voice call platform leveraging speech recognition APIs for seamless automation.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
+                </li>
+                <li>Architected and implemented a conversational AI API using PHP CodeIgniter to enable seamless, automated interactions.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL PHP]</span>
+                </li>
+                <li>
+                  Enhanced and maintained the Legal Aid Management System (LAMS) for a consortium of legal firms, improving functionality and operational efficiency.<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
+                </li>
+                <li>
+                  Provisioned and configured new Compute Engine virtual machines on Google Cloud Platform (GCP) to support the Legal Aid Management System (LAMS).<br/>
+                  <span class="tech-stack text-gray-400 text-xs">[cPanel, AlmaLinux]</span>
+                </li>
+                <li>Led a team of four developers, providing code reviews, technical guidance, and ongoing support to ensure high‑quality deliverables.</li>
+            </ul>
+          </div>
+          <div class="mt-4">
+            <h3 class="font-medium">Web Developer Engineer — NovaTech <span class="text-sm text-gray-600">(2020–2025)</span></h3>
+            <ul class="list-disc list-inside mt-1 text-sm">
+              <li>
+                Designed, developed, and maintained the Orion web application—built with Python, CherryPy, and PostgreSQL to configure and manage Orion product hardware servers.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, PostgreSQL, Cherrypy, HTML5, CSS3, Bootstrap, jQuery]</span>
+              </li>
+              <li>
+                Designed, developed, and maintained the Kronos Satellite Clock web application—built with Python and Flask to configure and manage Kronos satellite hardware servers.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, Flask, HTML5, CSS3, Bootstrap, jQuery]</span>
+              </li>
+              <li>
+                Designed, developed, and maintained the NovaTech product support website, enabling customers to authenticate via email or legacy credentials and securely download firmware updates.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, Python, MySQL, Django, HTML5, CSS3, TailwindCSS, jQuery]</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4">
+            <h3 class="font-medium">Full Stack Developer — The Lead Group <span class="text-sm text-gray-600">(2020–2020)</span></h3>
+            <ul class="list-disc list-inside mt-1 text-sm">
+              <li>
+                Developed, and maintained multiple PHP Laravel–based analytical applications to support data-driven decision-making.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, VueJS, jQuery]</span>
+              </li>
+              <li>
+                Developed, and enhanced a lead‑generation API utilizing PHP Laravel to improve performance and scalability.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL, PHP, Laravel]</span>
+              </li>
+              <li>
+                Developed, and maintained multiple front‑end lead‑generation websites to enhance user engagement and conversion rates.<br/>
+                <span class="tech-stack text-gray-400 text-xs">[React, Javascript, Typescript, HTML5, CSS3]</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4">
+            <h3 class="font-medium">Lead Full Stack Developer — AFCA <span class="text-sm text-gray-600">(2011–2020)</span></h3>
+            <ul class="list-disc list-inside text-sm mt-1">
+              <li>Developed and maintained web applications for both for‑profit and non‑profit law firms, supporting their operational and client service needs.<br/>
+                <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span>
+              </li>
+              <li>Provided daily technical support for all applications. Monday thru Sunday.</li>
+              <li>Provided on‑site networking and IT support at AFCA’s Houston office, ensuring reliable system performance and minimal downtime.</li>
+              <li>Provided instruction and hands‑on training to paid interns at AFCA’s Iowa State University campus office in 2015.</li>
+              <li>Led and managed a team of four developers, providing code reviews, mentorship, and technical guidance to ensure high‑quality deliverables.</li>
+            </ul>
+            <p class="mt-4 mb-4 text-sm">
+                The Legal Aid Management System (LAMS) is a PHP application built on the CodeIgniter framework to streamline daily operations for law firms. Hosted on Google Cloud Platform, 
+                it leverages MySQL and Redis for data storage and incorporates components developed in PHP, C#, JavaScript, Python, and Google Apps Script. Some of the application features include:
+            </p>
+            <ul class="list-disc list-inside text-sm mb-2">
+              <li>Contact and client data</li>
+              <li>Client case data</li>
+              <li>Manual and automatic billing</li>
+              <li>User/Employee time tracking</li>
+              <li>Document management and filing system</li>
+              <li>Legal document drafting and generation</li>
+              <li>Full VOIP call system</li>
+              <li>Dynamic client portal and data entry</li>
+              <li>Work queues and attorney consultations</li>
+              <li>Business and efficiency reports</li>
+              <li>And many more...</li>
+            </ul>
+            <p class="text-sm font-semibold text-gray-800 mb-2">Other Applications Built at AFCA</p>
+            <ul class="list-disc list-inside text-sm">
+              <li>
+                <strong>Filemation</strong> – Document organizer for cloud repositories like Dropbox, Box, GDrive.<br/>
+                <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
+              </li>
+              <li>
+                <strong>TxLRS Lawyers</strong> – Texas Lawyer Referral Service platform.<br/>
+                <a href="https://txlrs.org" class="tech-stack text-blue-600 hover:text-blue-800 text-sm">txlrs.org</a><br/>
+                <a href="https://txlrs-lawyers.org" class="tech-stack text-blue-600 hover:text-blue-800 text-sm">txlrs-lawyers.org</a><br/>
+                <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, HTML5, CSS3, jQuery]</span>
+              </li>
+              <li>
+                <strong>Sign Pen Free</strong> – Electronic document signing app similar to DocuSign.<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-xs text-gray-400">[Linux, Apache, MySQL, PHP, Javascript, React, HTML5, CSS3]</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4">
+            <h3 class="font-medium">Freelance <span class="text-sm text-gray-600">(2000–2009)</span></h3>
+            <ul class="list-disc list-inside mt-1 text-sm">
+              <li>Designed and developed a variety of websites and web applications between 2002 and 2009, utilizing HTML, CSS, CGI‑Perl, PHP, .NET, SQL, and Java.</li>
+              <li>Served as team leader and lead developer for the inaugural Shawnee Mission Northwest High School website from 2000 to 2003.</li>
+            </ul>
+          </div>
+        </section>
+        <section class="max-w-3xl mx-auto p-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Personal Projects</h2>
+          <div class="mt-4">
+            <ul class="list-dic list-inside mt-1 text-sm">
+              <li><strong>AOL</strong> – Developed Windows 95–98 applications using Microsoft Visual Basic 3 and 4, integrating with the America Online (AOL) Instant Messenger API for real‑time communication.</li>
+              <li>
+                <strong>PHP ElevenLabs AI</strong> – PHP ElevenLabs AI library package<br/>
+                <a href="https://coreylang.github.io/php-elevenlabs-ai/" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm">coreylang.github.io/php-elevenlabs-ai/</a>
+              </li>
+            </ul>
+          </div>
         </section>
       </main>
     </div>
