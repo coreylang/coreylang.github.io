@@ -181,6 +181,80 @@
           margin-top: 0px !important;
         }
       }
+
+      /* Rain in header */
+      #lightning-container {
+        position: relative;
+        overflow: hidden;
+      }
+      #lightning-container::before {
+        content: '';
+        position: absolute;
+        inset: -40px -30px;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+          180deg,
+          transparent 0,
+          transparent 16px,
+          rgba(200, 220, 255, 0.55) 16px,
+          rgba(200, 220, 255, 0.55) 18px
+        );
+        background-size: 100% 18px;
+        transform: skewX(-18deg);
+        animation: rainFall 0.45s linear infinite;
+        z-index: 1;
+        opacity: 0.7;
+      }
+      @keyframes rainFall {
+        from { background-position: 0 0; }
+        to   { background-position: 0 18px; }
+      }
+
+      /* Scroll-reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1);
+        will-change: opacity, transform;
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal { opacity: 1; transform: none; transition: none; }
+        #lightning-container::before { animation: none; }
+      }
+
+      /* Sparkle stage — keep sparkles viewport-wide above content */
+      #sparkle-stage {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 40;
+      }
+
+      /* Thunder toggle */
+      #thunder-toggle {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 10000;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
+      #thunder-toggle:hover { transform: scale(1.08); background: #fff; }
+      #thunder-toggle svg { width: 1.25rem; height: 1.25rem; color: #374151; }
+      #thunder-toggle.is-on svg { color: #facc15; filter: drop-shadow(0 0 4px #facc15); }
+      @media print { #thunder-toggle { display: none !important; } }
     </style>
     <script>
       function parseResumeToJSON() {
@@ -225,6 +299,8 @@
       }
 
       function createLightningBolt() {
+        const stage = document.getElementById('sparkle-stage');
+        if (!stage) return;
         const bolt = document.createElement('div');
         bolt.className = 'lightning-bolt';
 
@@ -234,7 +310,7 @@
         bolt.style.left = `${x}px`;
         bolt.style.top = `${y}px`;
 
-        document.getElementById('lightning-container').appendChild(bolt);
+        stage.appendChild(bolt);
 
         setTimeout(() => bolt.remove(), 600);
       }
@@ -303,7 +379,104 @@
           flash.remove();
           svg.remove();
         }, 950);
+
+        playThunder();
       }
+
+      /* Thunder rumble (synthesized brown noise) */
+      let thunderEnabled = false;
+      let thunderAudioCtx = null;
+
+      function ensureAudioCtx() {
+        if (!thunderAudioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) thunderAudioCtx = new Ctx();
+        }
+        if (thunderAudioCtx && thunderAudioCtx.state === 'suspended') {
+          thunderAudioCtx.resume();
+        }
+        return thunderAudioCtx;
+      }
+
+      function playThunder() {
+        if (!thunderEnabled) return;
+        const ctx = ensureAudioCtx();
+        if (!ctx) return;
+
+        const duration = 1.8 + Math.random() * 1.2;
+        const bufferSize = Math.floor(ctx.sampleRate * duration);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          last = (last + 0.02 * white) / 1.02;
+          data[i] = last * 3.5;
+        }
+
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+
+        const lowpass = ctx.createBiquadFilter();
+        lowpass.type = 'lowpass';
+        lowpass.frequency.value = 220;
+        lowpass.Q.value = 0.7;
+
+        const gain = ctx.createGain();
+        const now = ctx.currentTime;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.55, now + 0.08);
+        gain.gain.linearRampToValueAtTime(0.35, now + 0.4);
+        gain.gain.linearRampToValueAtTime(0.7, now + 0.55);
+        gain.gain.exponentialRampToValueAtTime(0.0008, now + duration);
+
+        source.connect(lowpass).connect(gain).connect(ctx.destination);
+        source.start(now);
+        source.stop(now + duration + 0.1);
+      }
+
+      function setupThunderToggle() {
+        const btn = document.getElementById('thunder-toggle');
+        if (!btn) return;
+        try {
+          thunderEnabled = localStorage.getItem('thunderEnabled') === 'true';
+        } catch (_) {}
+        btn.classList.toggle('is-on', thunderEnabled);
+        btn.setAttribute('aria-pressed', String(thunderEnabled));
+        btn.addEventListener('click', () => {
+          thunderEnabled = !thunderEnabled;
+          try { localStorage.setItem('thunderEnabled', String(thunderEnabled)); } catch (_) {}
+          btn.classList.toggle('is-on', thunderEnabled);
+          btn.setAttribute('aria-pressed', String(thunderEnabled));
+          if (thunderEnabled) ensureAudioCtx();
+        });
+      }
+
+      /* Scroll-reveal */
+      function setupScrollReveal() {
+        const targets = document.querySelectorAll('.job, .education');
+        if (!('IntersectionObserver' in window)) {
+          targets.forEach(el => el.classList.add('is-visible'));
+          return;
+        }
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+        targets.forEach(el => {
+          el.classList.add('reveal');
+          observer.observe(el);
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        setupThunderToggle();
+        setupScrollReveal();
+      });
 
       setInterval(() => {
         if (Math.random() < 0.040) createLightningBolt();
@@ -316,8 +489,17 @@
   </head>
   <body class="bg-gray-100 text-gray-800 font-sans antialiased">
     <div id="full-lightning-stage" aria-hidden="true"></div>
+    <div id="sparkle-stage" aria-hidden="true"></div>
+    <button id="thunder-toggle" type="button" aria-label="Toggle thunder sound" title="Toggle thunder sound">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+        <line x1="22" y1="9" x2="16" y2="15"></line>
+        <line x1="16" y1="9" x2="22" y2="15"></line>
+      </svg>
+    </button>
     <div class="max-w-6xl mx-auto mt-10 bg-white shadow-md rounded-lg grid grid-cols-1 md:grid-cols-3 print:hidden">
-      <aside class="md:col-span-1 text-white px-6 pt-8 pb-6 rounded-tl-lg rounded-bl-lg space-y-6 animated-sidebar">
+      <aside class="md:col-span-1 text-white px-6 pt-8 pb-6 rounded-tl-lg rounded-bl-lg animated-sidebar">
+       <div class="md:sticky md:top-4 space-y-6">
         <div class="text-sm text-gray-700 space-y-1">
           <h2 class="text-xl font-semibold text-gray-800 mb-2">Contact</h2>
           <p>📍 Shawnee, KS</p>
@@ -360,6 +542,7 @@
             <li><strong>Robert Brunkow</strong> – (913) 624-0524 · rbrunkowaftkc@gmail.com</li>
           </ul>
         </div>
+       </div>
       </aside>
       <main class="md:col-span-2">
         <section id="lightning-container" class="animated-gradient py-7 px-6 text-center text-white rounded-tr-lg">
