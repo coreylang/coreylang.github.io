@@ -15,6 +15,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <title>Christopher 'Corey' Lang - Software Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <style>
       @keyframes typing {
         from { width: 0 }
@@ -105,7 +106,7 @@
         animation: typing 3s steps(30, end), blink 0.7s step-end infinite;
       }
       .animated-gradient {
-        background: linear-gradient(270deg, #6b21a8, #3b82f6);
+        background: linear-gradient(270deg, var(--grad-1, #6b21a8), var(--grad-2, #3b82f6));
         background-size: 400% 400%;
         animation: gradientShift 10s ease infinite;
       }
@@ -366,6 +367,33 @@
       }
       .section-dot:hover::after { opacity: 1; }
       @media print { #section-nav { display: none !important; } }
+
+      /* Deep-link highlight flash */
+      .highlight-flash {
+        animation: highlightFlash 2.6s ease-out;
+        border-radius: 6px;
+      }
+      @keyframes highlightFlash {
+        0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0);   background-color: rgba(59,130,246,0); }
+        12%  { box-shadow: 0 0 0 10px rgba(59,130,246,0.5); background-color: rgba(59,130,246,0.08); }
+        100% { box-shadow: 0 0 0 0 rgba(59,130,246,0);   background-color: rgba(59,130,246,0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .highlight-flash { animation: none; }
+      }
+
+      /* Print QR code */
+      #print-qr-code svg {
+        width: 96px;
+        height: 96px;
+        display: block;
+      }
+      #print-qr {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-align: center;
+      }
 
       /* Copyable contact items */
       .copyable {
@@ -830,7 +858,56 @@
         });
       }
 
+      /* Time-of-day adaptive header gradient */
+      function setupTimeOfDay() {
+        const hour = new Date().getHours();
+        let g1, g2;
+        if (hour >= 5 && hour < 9) {        // dawn
+          g1 = '#a78bfa'; g2 = '#60a5fa';
+        } else if (hour >= 9 && hour < 17) { // day
+          g1 = '#6b21a8'; g2 = '#3b82f6';
+        } else if (hour >= 17 && hour < 20) {// dusk
+          g1 = '#be185d'; g2 = '#7c3aed';
+        } else {                             // night
+          g1 = '#1e1b4b'; g2 = '#0c1929';
+        }
+        document.documentElement.style.setProperty('--grad-1', g1);
+        document.documentElement.style.setProperty('--grad-2', g2);
+      }
+
+      /* Deep-link highlighting: ?company=hbnation */
+      function setupDeepLink() {
+        const params = new URLSearchParams(window.location.search);
+        const key = params.get('company');
+        if (!key) return;
+        const safe = (window.CSS && CSS.escape) ? CSS.escape(key) : key.replace(/[^a-zA-Z0-9_-]/g, '');
+        const target = document.querySelector(`.job[data-company="${safe}"]`);
+        if (!target) return;
+        target.classList.add('is-visible');
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => {
+            target.classList.add('highlight-flash');
+            setTimeout(() => target.classList.remove('highlight-flash'), 2700);
+          }, 600);
+        }, 250);
+      }
+
+      /* Print QR code */
+      function setupPrintQR() {
+        if (typeof qrcode !== 'function') return;
+        const target = document.getElementById('print-qr-code');
+        if (!target) return;
+        try {
+          const qr = qrcode(0, 'M');
+          qr.addData('https://coreylang.github.io');
+          qr.make();
+          target.innerHTML = qr.createSvgTag(4, 0);
+        } catch (_) { /* ignore */ }
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
+        setupTimeOfDay();
         setupThunderToggle();
         setupScrollReveal();
         setupStats();
@@ -838,6 +915,8 @@
         setupCopyable();
         setupTimelineProgress();
         setupKonami();
+        setupPrintQR();
+        setupDeepLink();
       });
 
       setInterval(() => {
@@ -1010,7 +1089,7 @@
         <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
           <div class="timeline relative border-l-4 border-gray-300 pl-6 space-y-12">
             <!-- Home Buyer Nation -->
-            <div class="job relative">
+            <div class="job relative" data-company="hbnation">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-teal-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2025 – Present</time>
               <h3 class="text-xl font-semibold text-gray-800">Home Buyer Nation</h3>
@@ -1029,7 +1108,7 @@
             </div>
 
             <!-- The Status -->
-            <div class="job relative">
+            <div class="job relative" data-company="thestatus">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-red-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2025 – 2026</time>
               <h3 class="text-xl font-semibold text-gray-800">The Status</h3>
@@ -1051,7 +1130,7 @@
             </div>
 
             <!-- AFCA -->
-            <div class="job relative">
+            <div class="job relative" data-company="afca-2025">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-purple-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2025</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
@@ -1078,7 +1157,7 @@
             </div>
 
             <!-- NovaTech -->
-            <div class="job relative">
+            <div class="job relative" data-company="novatech">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-blue-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2020 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">NovaTech</h3>
@@ -1100,7 +1179,7 @@
             </div>
 
             <!-- The Lead Group -->
-            <div class="job relative">
+            <div class="job relative" data-company="leadgroup">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-green-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2020 - 2020</time>
               <h3 class="text-xl font-semibold text-gray-800">The Lead Group</h3>
@@ -1122,7 +1201,7 @@
             </div>
 
             <!-- AFCA -->
-            <div class="job relative">
+            <div class="job relative" data-company="afca">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-red-600 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2011 - 2020</time>
               <h3 class="text-xl font-semibold text-gray-800">AFCA</h3>
@@ -1174,7 +1253,7 @@
             </div>
 
             <!-- Angell EYE -->
-            <div class="job relative">
+            <div class="job relative" data-company="angelleye">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-orange-500 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2009 - 2011</time>
               <h3 class="text-xl font-semibold text-gray-800">Angell EYE</h3>
@@ -1189,7 +1268,7 @@
             </div>
 
             <!-- Freelance/Contract Development -->
-            <div class="job relative">
+            <div class="job relative" data-company="freelance">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-orange-500 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">2000 - 2009</time>
               <h3 class="text-xl font-semibold text-gray-800">Freelance</h3>
@@ -1201,7 +1280,7 @@
             </div>
 
             <!-- Personal Projects -->
-            <div class="job relative">
+            <div class="job relative" data-company="personal">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-yellow-400 rounded-full border-4 border-white"></div>
               <time class="job-timeline text-xs text-gray-500 uppercase tracking-wide">1998 - 2025</time>
               <h3 class="text-xl font-semibold text-gray-800">Personal Projects</h3>
@@ -1283,7 +1362,11 @@
     </footer>
     <div class="hidden print:block">
       <header>
-        <section>
+        <section class="relative">
+          <div id="print-qr">
+            <div id="print-qr-code"></div>
+            <p class="text-[8pt] text-gray-600 mt-1">coreylang.github.io</p>
+          </div>
           <h1 class="text-3xl font-bold text-center">Corey Lang</h1>
           <p class="title text-xl font-medium mb-4 w-fit mx-auto">
             Software Engineer
