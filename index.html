@@ -58,6 +58,23 @@
         60% { transform: scale(0.9) rotate(5deg); opacity: 0.8; }
         100% { transform: scale(0.5) rotate(0deg); opacity: 0; }
       }
+      @keyframes screenFlash {
+        0%   { opacity: 0; }
+        8%   { opacity: 0.85; }
+        16%  { opacity: 0.1; }
+        24%  { opacity: 0.7; }
+        40%  { opacity: 0.05; }
+        100% { opacity: 0; }
+      }
+      @keyframes boltStrike {
+        0%   { opacity: 0; transform: translateX(0) scaleY(0.95); filter: brightness(2) drop-shadow(0 0 18px #fff) drop-shadow(0 0 36px #facc15); }
+        6%   { opacity: 1; transform: translateX(-3px) scaleY(1); }
+        12%  { opacity: 0.2; transform: translateX(2px) scaleY(1); }
+        18%  { opacity: 1; transform: translateX(0) scaleY(1); }
+        30%  { opacity: 0.9; filter: brightness(1.4) drop-shadow(0 0 14px #fff) drop-shadow(0 0 28px #facc15); }
+        70%  { opacity: 0.6; filter: brightness(1.1) drop-shadow(0 0 10px #facc15) drop-shadow(0 0 22px #f59e0b); }
+        100% { opacity: 0; transform: translateX(0) scaleY(1); filter: brightness(1) drop-shadow(0 0 4px #facc15); }
+      }
 
       @layer utilities {
         .page-break { page-break-before: always; }
@@ -109,6 +126,31 @@
         animation: strike 0.9s ease-out;
         opacity: 0.9;
         filter: drop-shadow(0 0 6px #facc15) drop-shadow(0 0 12px #facc15);
+      }
+      #full-lightning-stage {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        overflow: hidden;
+      }
+      .full-lightning-flash {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(255,255,240,0.95) 0%, rgba(255,236,160,0.6) 30%, rgba(255,255,255,0) 75%);
+        animation: screenFlash 0.9s ease-out forwards;
+        mix-blend-mode: screen;
+      }
+      .full-lightning-bolt {
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        width: auto;
+        animation: boltStrike 0.9s ease-out forwards;
+        transform-origin: top center;
+      }
+      @media print {
+        #full-lightning-stage { display: none !important; }
       }
       h1.full-name {
         text-shadow: 2px 2px 0 #1e3a8a, 4px 4px 0 #9333ea;
@@ -197,12 +239,83 @@
         setTimeout(() => bolt.remove(), 600);
       }
 
+      function generateBoltPath() {
+        const segments = 6 + Math.floor(Math.random() * 4);
+        const width = 220;
+        const height = 1000;
+        let x = width / 2;
+        let y = 0;
+        let d = `M ${x} ${y}`;
+        for (let i = 1; i <= segments; i++) {
+          const ny = (height / segments) * i;
+          const nx = width / 2 + (Math.random() - 0.5) * width * 0.85;
+          d += ` L ${nx} ${ny}`;
+          if (Math.random() < 0.45 && i < segments) {
+            const bx = nx + (Math.random() - 0.5) * width * 0.7;
+            const by = ny + (height / segments) * (0.4 + Math.random() * 0.5);
+            d += ` M ${nx} ${ny} L ${bx} ${by} M ${nx} ${ny}`;
+          }
+          x = nx;
+          y = ny;
+        }
+        return d;
+      }
+
+      function createFullPageLightning() {
+        const stage = document.getElementById('full-lightning-stage');
+        if (!stage) return;
+
+        const flash = document.createElement('div');
+        flash.className = 'full-lightning-flash';
+        stage.appendChild(flash);
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('class', 'full-lightning-bolt');
+        svg.setAttribute('viewBox', '0 0 220 1000');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.style.left = `${Math.random() * (window.innerWidth - 220)}px`;
+
+        const d = generateBoltPath();
+
+        const glow = document.createElementNS(svgNS, 'path');
+        glow.setAttribute('d', d);
+        glow.setAttribute('stroke', '#facc15');
+        glow.setAttribute('stroke-width', '14');
+        glow.setAttribute('stroke-linecap', 'round');
+        glow.setAttribute('stroke-linejoin', 'round');
+        glow.setAttribute('fill', 'none');
+        glow.setAttribute('opacity', '0.55');
+
+        const core = document.createElementNS(svgNS, 'path');
+        core.setAttribute('d', d);
+        core.setAttribute('stroke', '#ffffff');
+        core.setAttribute('stroke-width', '4');
+        core.setAttribute('stroke-linecap', 'round');
+        core.setAttribute('stroke-linejoin', 'round');
+        core.setAttribute('fill', 'none');
+
+        svg.appendChild(glow);
+        svg.appendChild(core);
+        stage.appendChild(svg);
+
+        setTimeout(() => {
+          flash.remove();
+          svg.remove();
+        }, 950);
+      }
+
       setInterval(() => {
         if (Math.random() < 0.040) createLightningBolt();
       }, 100);
+
+      setInterval(() => {
+        if (Math.random() < 0.06) createFullPageLightning();
+      }, 1500);
     </script>
   </head>
   <body class="bg-gray-100 text-gray-800 font-sans antialiased">
+    <div id="full-lightning-stage" aria-hidden="true"></div>
     <div class="max-w-6xl mx-auto mt-10 bg-white shadow-md rounded-lg grid grid-cols-1 md:grid-cols-3 print:hidden">
       <aside class="md:col-span-1 text-white px-6 pt-8 pb-6 rounded-tl-lg rounded-bl-lg space-y-6 animated-sidebar">
         <div class="text-sm text-gray-700 space-y-1">
