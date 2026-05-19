@@ -14,6 +14,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="favicon.png">
     <title>Christopher 'Corey' Lang - Software Engineer</title>
+    <meta name="description" content="Christopher 'Corey' Lang — full-stack software engineer in Shawnee, KS. 16+ years building web applications, RESTful APIs, and payment integrations with PHP, Laravel, Python, Node.js, React, and Vue." />
+    <meta name="author" content="Christopher 'Corey' Lang" />
+    <meta name="keywords" content="Corey Lang, Christopher Lang, software engineer, full-stack developer, PHP, Laravel, Python, Node.js, React, Vue, Shawnee KS, resume" />
+    <link rel="canonical" href="https://coreylang.github.io/" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="Christopher 'Corey' Lang — Software Engineer" />
+    <meta property="og:description" content="Full-stack software engineer with 16+ years of experience in PHP, Laravel, Python, Node.js, React, and Vue." />
+    <meta property="og:url" content="https://coreylang.github.io/" />
+    <meta property="og:image" content="https://coreylang.github.io/favicon.png" />
+    <meta property="profile:first_name" content="Christopher" />
+    <meta property="profile:last_name" content="Lang" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Christopher 'Corey' Lang — Software Engineer" />
+    <meta name="twitter:description" content="Full-stack software engineer with 16+ years of experience in PHP, Laravel, Python, Node.js, React, and Vue." />
+    <meta name="twitter:image" content="https://coreylang.github.io/favicon.png" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Christopher Corey Lang",
+      "alternateName": "Corey Lang",
+      "jobTitle": "Software Engineer",
+      "url": "https://coreylang.github.io/",
+      "image": "https://coreylang.github.io/favicon.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Shawnee",
+        "addressRegion": "KS",
+        "addressCountry": "US"
+      },
+      "email": "coreylang.dev@gmail.com",
+      "sameAs": [
+        "https://github.com/coreylang",
+        "https://www.linkedin.com/in/corey-lang-2b3b28185/"
+      ]
+    }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <style>
@@ -906,7 +946,13 @@
         } catch (_) { /* ignore */ }
       }
 
+      function setupCopyrightYear() {
+        const el = document.getElementById('copyright-year');
+        if (el) el.textContent = new Date().getFullYear();
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
+        setupCopyrightYear();
         setupTimeOfDay();
         setupThunderToggle();
         setupScrollReveal();
@@ -1307,8 +1353,8 @@
             <div class="education relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-orange-500 rounded-full border-4 border-white"></div>
               <time class="education-timeline text-xs text-gray-500 uppercase tracking-wide">1999 - 2003</time>
-              <h3 class="text-xl font-semibold text-gray-800">Shawnee Mission Northwest Highschool</h3>
-              <p class="job-title text-sm text-gray-600">HS Deploma</p>
+              <h3 class="text-xl font-semibold text-gray-800">Shawnee Mission Northwest High School</h3>
+              <p class="job-title text-sm text-gray-600">HS Diploma</p>
             </div>
           </div>
         </section>
@@ -1354,7 +1400,7 @@
         <p id="json-view"></p>
       </p>
       <p>
-        © 2025 Christopher "Corey" Lang. Licensed under 
+        © <span id="copyright-year">2025</span> Christopher "Corey" Lang. Licensed under
         <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 hover:text-blue-800">
           CC BY-SA 4.0
         </a>.
@@ -1632,7 +1678,7 @@
           <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Education</h2>
           <div class="mt-4">
             <h3 class="font-medium">Johnson County Community College <span class="text-sm text-gray-600">(2003–2005)</span></h3>
-            <h3 class="font-medium">Shawnee Mission Northwest Highschool · HS Diploma <span class="text-sm text-gray-600">(1999–2003)</span></h3>
+            <h3 class="font-medium">Shawnee Mission Northwest High School · HS Diploma <span class="text-sm text-gray-600">(1999–2003)</span></h3>
           </div>
         </section>
         <section class="max-w-3xl mx-auto p-6">
