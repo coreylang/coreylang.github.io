@@ -234,6 +234,139 @@
         z-index: 40;
       }
 
+      /* Smooth anchor scrolling */
+      html { scroll-behavior: smooth; }
+
+      /* Skill chips */
+      .skill-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.65);
+        color: #1f2937;
+        font-size: 0.7rem;
+        font-weight: 500;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+        cursor: default;
+        letter-spacing: 0.01em;
+      }
+      .skill-chip:hover {
+        background: #ffffff;
+        color: #1e3a8a;
+        transform: translateY(-2px);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25), 0 0 14px rgba(59, 130, 246, 0.45);
+      }
+
+      /* Stat counters */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+      }
+      .stat {
+        text-align: center;
+        padding: 0.75rem 0.5rem;
+        border-radius: 0.5rem;
+        background: linear-gradient(180deg, rgba(243,244,246,0.6), rgba(243,244,246,0));
+        transition: transform 0.2s ease;
+      }
+      .stat:hover { transform: translateY(-2px); }
+      .stat-value {
+        font-size: 1.875rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #3b82f6, #6b21a8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.1;
+      }
+      .stat-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #6b7280;
+        margin-top: 0.25rem;
+      }
+
+      /* Featured project cards */
+      .project-card {
+        display: block;
+        padding: 0.875rem 1rem;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        text-decoration: none;
+      }
+      .project-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.09);
+        border-color: rgba(59, 130, 246, 0.45);
+      }
+      .project-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.05rem;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* Floating section nav dots */
+      #section-nav {
+        position: fixed;
+        top: 50%;
+        right: 1.25rem;
+        transform: translateY(-50%);
+        display: none;
+        flex-direction: column;
+        gap: 0.625rem;
+        z-index: 1000;
+      }
+      @media (min-width: 1024px) {
+        #section-nav { display: flex; }
+      }
+      .section-dot {
+        position: relative;
+        width: 10px;
+        height: 10px;
+        border-radius: 9999px;
+        background: rgba(55, 65, 81, 0.28);
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+      .section-dot:hover {
+        background: rgba(59, 130, 246, 0.65);
+        transform: scale(1.4);
+      }
+      .section-dot.is-active {
+        background: #3b82f6;
+        transform: scale(1.5);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.55);
+      }
+      .section-dot::after {
+        content: attr(data-label);
+        position: absolute;
+        right: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(17, 24, 39, 0.92);
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.65rem;
+        border-radius: 4px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+      }
+      .section-dot:hover::after { opacity: 1; }
+      @media print { #section-nav { display: none !important; } }
+
       /* Thunder toggle */
       #thunder-toggle {
         position: fixed;
@@ -473,9 +606,73 @@
         });
       }
 
+      /* Stat counters — animate when scrolled into view */
+      function animateCount(el) {
+        const target = parseInt(el.dataset.count, 10) || 0;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const start = performance.now();
+        function step(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function setupStats() {
+        const stats = document.querySelectorAll('.stat-value');
+        if (!stats.length) return;
+        if (!('IntersectionObserver' in window)) {
+          stats.forEach(animateCount);
+          return;
+        }
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              animateCount(e.target);
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.4 });
+        stats.forEach(s => obs.observe(s));
+      }
+
+      /* Floating section-nav active state */
+      function setupSectionNav() {
+        const dots = document.querySelectorAll('.section-dot');
+        if (!dots.length) return;
+        const targets = Array.from(dots)
+          .map(d => ({ dot: d, el: document.getElementById(d.dataset.target) }))
+          .filter(t => t.el);
+        if (!targets.length) return;
+
+        let ticking = false;
+        function update() {
+          const line = window.innerHeight * 0.35;
+          let active = targets[0];
+          for (const t of targets) {
+            const rect = t.el.getBoundingClientRect();
+            if (rect.top <= line) active = t;
+          }
+          targets.forEach(t => t.dot.classList.toggle('is-active', t === active));
+          ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+          }
+        }, { passive: true });
+        update();
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         setupThunderToggle();
         setupScrollReveal();
+        setupStats();
+        setupSectionNav();
       });
 
       setInterval(() => {
@@ -490,6 +687,12 @@
   <body class="bg-gray-100 text-gray-800 font-sans antialiased">
     <div id="full-lightning-stage" aria-hidden="true"></div>
     <div id="sparkle-stage" aria-hidden="true"></div>
+    <nav id="section-nav" aria-label="Section navigation">
+      <a href="#lightning-container" data-target="lightning-container" data-label="Top" class="section-dot" aria-label="Top"></a>
+      <a href="#featured" data-target="featured" data-label="Featured Projects" class="section-dot" aria-label="Featured Projects"></a>
+      <a href="#jobs" data-target="jobs" data-label="Job History" class="section-dot" aria-label="Job History"></a>
+      <a href="#education" data-target="education" data-label="Education" class="section-dot" aria-label="Education"></a>
+    </nav>
     <button id="thunder-toggle" type="button" aria-label="Toggle thunder sound" title="Toggle thunder sound">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
@@ -516,14 +719,40 @@
         </div>
         <div>
           <h2 class="text-xl font-semibold text-gray-800 mb-2">Skills</h2>
-          <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
-            <li>LAMP, HTML, CSS, JS, PHP, Python</li>
-            <li>C, C++, Perl, CodeIgniter, Laravel</li>
-            <li>Node.js, React, Angular, TypeScript</li>
-            <li>VueJS, Astro, NextJS, Fastify, Express</li>
-            <li>MySQL, MariaDB, Linux, Windows</li>
-            <li>Google Cloud Platform, AWS, Apache</li>
-          </ul>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="skill-chip">PHP</span>
+            <span class="skill-chip">Laravel</span>
+            <span class="skill-chip">CodeIgniter</span>
+            <span class="skill-chip">Python</span>
+            <span class="skill-chip">Django</span>
+            <span class="skill-chip">Flask</span>
+            <span class="skill-chip">Node.js</span>
+            <span class="skill-chip">Express</span>
+            <span class="skill-chip">Fastify</span>
+            <span class="skill-chip">TypeScript</span>
+            <span class="skill-chip">JavaScript</span>
+            <span class="skill-chip">React</span>
+            <span class="skill-chip">VueJS</span>
+            <span class="skill-chip">Angular</span>
+            <span class="skill-chip">NextJS</span>
+            <span class="skill-chip">Astro</span>
+            <span class="skill-chip">Tailwind CSS</span>
+            <span class="skill-chip">HTML5</span>
+            <span class="skill-chip">CSS3</span>
+            <span class="skill-chip">C / C++</span>
+            <span class="skill-chip">Perl</span>
+            <span class="skill-chip">MySQL</span>
+            <span class="skill-chip">MariaDB</span>
+            <span class="skill-chip">PostgreSQL</span>
+            <span class="skill-chip">Redis</span>
+            <span class="skill-chip">Prisma</span>
+            <span class="skill-chip">Linux</span>
+            <span class="skill-chip">Apache</span>
+            <span class="skill-chip">AWS</span>
+            <span class="skill-chip">GCP</span>
+            <span class="skill-chip">Docker</span>
+            <span class="skill-chip">Git</span>
+          </div>
         </div>
         <div>
           <h2 class="text-xl font-semibold text-gray-800 mb-2">Education</h2>
@@ -559,7 +788,58 @@
             </p>
           </div>
         </section>
-        <section class="p-6">
+        <section class="px-6 pt-6 pb-2">
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="stat-value" data-count="16" data-suffix="+">0</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" data-count="8">0</div>
+              <div class="stat-label">Roles</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" data-count="30" data-suffix="+">0</div>
+              <div class="stat-label">Technologies</div>
+            </div>
+          </div>
+        </section>
+        <section id="featured" class="px-6 pt-4 pb-2">
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">Featured Projects</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <a href="https://hbnation.co" target="_blank" rel="noopener" class="project-card group">
+              <div class="flex items-start gap-3">
+                <div class="project-icon" style="background:#2B3679">🏠</div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-900 text-sm group-hover:text-blue-700 transition-colors">Home Buyer Nation</h3>
+                  <p class="text-xs text-gray-600 mt-0.5">Real estate platform — a Zillow alternative.</p>
+                  <p class="text-[0.65rem] text-gray-400 mt-1 uppercase tracking-wider">Laravel · Vue · MySQL</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://thestatus.dev" target="_blank" rel="noopener" class="project-card group">
+              <div class="flex items-start gap-3">
+                <div class="project-icon bg-red-600">📺</div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-900 text-sm group-hover:text-red-600 transition-colors">The Status</h3>
+                  <p class="text-xs text-gray-600 mt-0.5">Real-time order tracking for service businesses.</p>
+                  <p class="text-[0.65rem] text-gray-400 mt-1 uppercase tracking-wider">TypeScript · React · Prisma</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://coreylang.github.io/php-elevenlabs-ai/" target="_blank" rel="noopener" class="project-card group">
+              <div class="flex items-start gap-3">
+                <div class="project-icon bg-purple-600">🎙️</div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors">PHP ElevenLabs AI</h3>
+                  <p class="text-xs text-gray-600 mt-0.5">Open-source PHP library for the ElevenLabs API.</p>
+                  <p class="text-[0.65rem] text-gray-400 mt-1 uppercase tracking-wider">PHP · Open Source</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+        <section id="jobs" class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-1">Job History & Projects</h2>
         </section>
         <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
@@ -770,7 +1050,7 @@
             </div>
           </div>
         </section>
-        <section class="p-6">
+        <section id="education" class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-1">Education</h2>
         </section>
         <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
