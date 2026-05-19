@@ -228,27 +228,35 @@
         position: relative;
         overflow: hidden;
       }
-      #lightning-container::before {
-        content: '';
+      #rain-stage {
         position: absolute;
-        inset: -40px -30px;
+        inset: 0;
         pointer-events: none;
-        background-image: repeating-linear-gradient(
-          180deg,
-          transparent 0,
-          transparent 16px,
-          rgba(200, 220, 255, 0.55) 16px,
-          rgba(200, 220, 255, 0.55) 18px
-        );
-        background-size: 100% 18px;
-        transform: skewX(-18deg);
-        animation: rainFall 0.45s linear infinite;
+        overflow: hidden;
+        transform: skewX(-14deg);
         z-index: 1;
-        opacity: 0.7;
       }
-      @keyframes rainFall {
-        from { background-position: 0 0; }
-        to   { background-position: 0 18px; }
+      .rain-drop {
+        position: absolute;
+        top: 0;
+        width: 1px;
+        background: linear-gradient(
+          180deg,
+          rgba(200, 220, 255, 0)   0%,
+          rgba(200, 220, 255, 0.4) 35%,
+          rgba(220, 235, 255, 0.9) 80%,
+          rgba(220, 235, 255, 0.1) 100%
+        );
+        border-radius: 2px;
+        animation: rainDrop linear infinite;
+        will-change: transform;
+      }
+      @keyframes rainDrop {
+        0%   { transform: translate3d(0, -60px, 0); }
+        100% { transform: translate3d(0, 320px, 0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #rain-stage { display: none; }
       }
 
       /* Scroll-reveal */
@@ -951,8 +959,34 @@
         if (el) el.textContent = new Date().getFullYear();
       }
 
+      /* Rain — individual streaks with varied speed, length, and opacity */
+      function setupRain() {
+        const container = document.getElementById('lightning-container');
+        if (!container) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const stage = document.createElement('div');
+        stage.id = 'rain-stage';
+        stage.setAttribute('aria-hidden', 'true');
+        container.appendChild(stage);
+
+        const COUNT = 90;
+        for (let i = 0; i < COUNT; i++) {
+          const drop = document.createElement('span');
+          drop.className = 'rain-drop';
+          const duration = 0.45 + Math.random() * 0.7;
+          drop.style.left = (Math.random() * 115 - 5) + '%';
+          drop.style.height = (12 + Math.random() * 28) + 'px';
+          drop.style.opacity = String(0.25 + Math.random() * 0.55);
+          drop.style.animationDuration = duration + 's';
+          drop.style.animationDelay = (-Math.random() * duration) + 's';
+          stage.appendChild(drop);
+        }
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         setupCopyrightYear();
+        setupRain();
         setupTimeOfDay();
         setupThunderToggle();
         setupScrollReveal();
