@@ -367,6 +367,74 @@
       .section-dot:hover::after { opacity: 1; }
       @media print { #section-nav { display: none !important; } }
 
+      /* Copyable contact items */
+      .copyable {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        transition: color 0.15s ease, transform 0.15s ease;
+      }
+      .copyable:hover {
+        color: #1e3a8a;
+        transform: translateX(2px);
+      }
+      .copyable:focus-visible {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      /* Toast notifications */
+      #toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translate(-50%, 30px);
+        background: rgba(17, 24, 39, 0.94);
+        color: #fff;
+        padding: 0.625rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        z-index: 10001;
+        opacity: 0;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        pointer-events: none;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      }
+      #toast.is-visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      @media print { #toast { display: none !important; } }
+
+      /* Timeline progress fill */
+      .timeline { position: relative; }
+      .timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -4px;
+        width: 4px;
+        height: var(--progress, 0%);
+        background: linear-gradient(to bottom, #3b82f6, #6b21a8);
+        transition: height 0.08s linear;
+        z-index: 1;
+        pointer-events: none;
+        box-shadow: 0 0 8px rgba(59,130,246,0.4);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .timeline::before { transition: none; }
+      }
+      @media print { .timeline::before { display: none; } }
+
       /* Thunder toggle */
       #thunder-toggle {
         position: fixed;
@@ -668,11 +736,108 @@
         update();
       }
 
+      /* Toast */
+      function showToast(message) {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'toast';
+          document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('is-visible');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+          toast.classList.remove('is-visible');
+        }, 1800);
+      }
+
+      /* Click-to-copy contact items */
+      function setupCopyable() {
+        document.querySelectorAll('.copyable').forEach(el => {
+          el.addEventListener('click', async () => {
+            const text = el.dataset.copy;
+            if (!text) return;
+            try {
+              await navigator.clipboard.writeText(text);
+              showToast(`Copied: ${text}`);
+            } catch (_) {
+              const ta = document.createElement('textarea');
+              ta.value = text;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.select();
+              try { document.execCommand('copy'); showToast(`Copied: ${text}`); }
+              catch (_) { showToast('Copy failed'); }
+              ta.remove();
+            }
+          });
+        });
+      }
+
+      /* Timeline progress fill */
+      function setupTimelineProgress() {
+        const timeline = document.querySelector('.timeline');
+        if (!timeline) return;
+        let ticking = false;
+        function update() {
+          const rect = timeline.getBoundingClientRect();
+          const line = window.innerHeight * 0.5;
+          const progress = Math.max(0, Math.min(1, (line - rect.top) / rect.height));
+          timeline.style.setProperty('--progress', (progress * 100) + '%');
+          ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+          if (!ticking) { requestAnimationFrame(update); ticking = true; }
+        }, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+      }
+
+      /* Konami code → storm mode */
+      function triggerStormMode() {
+        showToast('⚡ STORM MODE ⚡');
+        const wasEnabled = thunderEnabled;
+        thunderEnabled = true;
+        ensureAudioCtx();
+        const duration = 6000;
+        const start = Date.now();
+        (function pulse() {
+          if (Date.now() - start > duration) {
+            thunderEnabled = wasEnabled;
+            return;
+          }
+          createFullPageLightning();
+          for (let i = 0; i < 6; i++) createLightningBolt();
+          setTimeout(pulse, 320 + Math.random() * 380);
+        })();
+      }
+
+      function setupKonami() {
+        const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
+        let pos = 0;
+        document.addEventListener('keydown', (e) => {
+          if (e.code === code[pos]) {
+            pos++;
+            if (pos === code.length) {
+              pos = 0;
+              triggerStormMode();
+            }
+          } else {
+            pos = (e.code === code[0]) ? 1 : 0;
+          }
+        });
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         setupThunderToggle();
         setupScrollReveal();
         setupStats();
         setupSectionNav();
+        setupCopyable();
+        setupTimelineProgress();
+        setupKonami();
       });
 
       setInterval(() => {
@@ -706,8 +871,8 @@
         <div class="text-sm text-gray-700 space-y-1">
           <h2 class="text-xl font-semibold text-gray-800 mb-2">Contact</h2>
           <p>📍 Shawnee, KS</p>
-          <p>📞 (816) 506-0057</p>
-          <p>📧 coreylang.dev@gmail.com</p>
+          <button type="button" class="copyable" data-copy="(816) 506-0057" title="Click to copy">📞 (816) 506-0057</button>
+          <button type="button" class="copyable" data-copy="coreylang.dev@gmail.com" title="Click to copy">📧 coreylang.dev@gmail.com</button>
         </div>
         <div>
           <h2 class="text-xl font-semibold text-gray-800 mb-2">Profile</h2>
@@ -843,7 +1008,7 @@
           <h2 class="text-2xl font-bold text-gray-900 mb-1">Job History & Projects</h2>
         </section>
         <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
-          <div class="relative border-l-4 border-gray-300 pl-6 space-y-12">
+          <div class="timeline relative border-l-4 border-gray-300 pl-6 space-y-12">
             <!-- Home Buyer Nation -->
             <div class="job relative">
               <div class="absolute -left-9 top-1 w-5 h-5 bg-teal-600 rounded-full border-4 border-white"></div>
