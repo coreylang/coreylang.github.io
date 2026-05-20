@@ -700,6 +700,9 @@
       #thunder-toggle:hover { transform: scale(1.08); background: #fff; }
       #thunder-toggle svg { width: 1.25rem; height: 1.25rem; color: #374151; }
       #thunder-toggle.is-on svg { color: #facc15; filter: drop-shadow(0 0 4px #facc15); }
+      #thunder-toggle .sound-waves { display: none; }
+      #thunder-toggle.is-on .mute-x { display: none; }
+      #thunder-toggle.is-on .sound-waves { display: inline; }
       @media print { #thunder-toggle { display: none !important; } }
     </style>
     <script>
@@ -1283,8 +1286,14 @@
     <button id="thunder-toggle" type="button" aria-label="Toggle thunder sound" title="Toggle thunder sound">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-        <line x1="22" y1="9" x2="16" y2="15"></line>
-        <line x1="16" y1="9" x2="22" y2="15"></line>
+        <g class="mute-x">
+          <line x1="22" y1="9" x2="16" y2="15"></line>
+          <line x1="16" y1="9" x2="22" y2="15"></line>
+        </g>
+        <g class="sound-waves">
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </g>
       </svg>
     </button>
     <div class="max-w-6xl mx-auto mt-10 bg-white shadow-md rounded-lg grid grid-cols-1 md:grid-cols-3 print:hidden">
