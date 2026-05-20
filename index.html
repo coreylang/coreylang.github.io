@@ -501,6 +501,15 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.25);
         box-shadow: 0 0 0 4px rgba(255,255,255,0.7), 0 0 18px rgba(59,130,246,0.45);
         animation: monogramHalo 3s ease-in-out infinite;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+        user-select: none;
+      }
+      .sidebar-monogram:hover { transform: scale(1.05); }
+      .sidebar-monogram:active { transform: scale(0.95); }
+      .sidebar-monogram:focus-visible {
+        outline: 2px solid #facc15;
+        outline-offset: 4px;
       }
       @keyframes monogramHalo {
         0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.7), 0 0 18px rgba(59,130,246,0.42); }
@@ -1050,6 +1059,36 @@
         })();
       }
 
+      /* Click the monogram → mini storm */
+      function setupMonogramStorm() {
+        const monogram = document.querySelector('.sidebar-monogram');
+        if (!monogram) return;
+        let firing = false;
+        function fire() {
+          if (firing) return;
+          firing = true;
+          const wasEnabled = thunderEnabled;
+          thunderEnabled = true;
+          ensureAudioCtx();
+          createFullPageLightning();
+          for (let i = 0; i < 14; i++) {
+            setTimeout(createLightningBolt, i * 70);
+          }
+          setTimeout(createFullPageLightning, 450);
+          setTimeout(() => {
+            thunderEnabled = wasEnabled;
+            firing = false;
+          }, 1500);
+        }
+        monogram.addEventListener('click', fire);
+        monogram.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fire();
+          }
+        });
+      }
+
       function setupKonami() {
         const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
         let pos = 0;
@@ -1218,6 +1257,7 @@
         setupCopyable();
         setupTimelineProgress();
         setupKonami();
+        setupMonogramStorm();
         setupPrintQR();
         setupDeepLink();
       });
@@ -1252,7 +1292,7 @@
        <div class="md:sticky md:top-4 relative">
         <div class="sidebar-glass space-y-5">
         <div class="sidebar-monogram-wrap">
-          <div class="sidebar-monogram" aria-hidden="true"><span>CL</span></div>
+          <div class="sidebar-monogram" role="button" tabindex="0" aria-label="Trigger a storm" title="Click for a storm"><span>CL</span></div>
           <div class="sidebar-socials">
             <a href="https://github.com/coreylang" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

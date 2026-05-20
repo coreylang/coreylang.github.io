@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>404 — Struck by Lightning · Corey Lang</title>
+    <meta name="description" content="This page wandered off into the storm." />
+    <meta name="robots" content="noindex" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes gradientShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      @keyframes flicker404 {
+        0%, 100% { opacity: 1; }
+        46%      { opacity: 0.35; }
+        48%      { opacity: 1; }
+        53%      { opacity: 0.7; }
+        56%      { opacity: 1; }
+      }
+      @keyframes boltStrike {
+        0%   { opacity: 0; filter: brightness(2) drop-shadow(0 0 18px #fff) drop-shadow(0 0 36px #facc15); }
+        6%   { opacity: 1; }
+        12%  { opacity: 0.2; }
+        18%  { opacity: 1; }
+        30%  { opacity: 0.9; filter: brightness(1.4) drop-shadow(0 0 14px #fff) drop-shadow(0 0 28px #facc15); }
+        70%  { opacity: 0.55; filter: brightness(1.1) drop-shadow(0 0 10px #facc15); }
+        100% { opacity: 0; filter: brightness(1) drop-shadow(0 0 4px #facc15); }
+      }
+      @keyframes screenFlash {
+        0%   { opacity: 0; }
+        10%  { opacity: 0.7; }
+        20%  { opacity: 0.1; }
+        30%  { opacity: 0.5; }
+        100% { opacity: 0; }
+      }
+      body {
+        background: linear-gradient(135deg, #0c1929, #1e1b4b, #6b21a8, #1e3a8a);
+        background-size: 400% 400%;
+        animation: gradientShift 16s ease infinite;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+      .glitched-404 {
+        font-size: clamp(7rem, 22vw, 15rem);
+        font-weight: 900;
+        line-height: 0.95;
+        background: linear-gradient(135deg, #facc15 0%, #ffffff 45%, #a78bfa 100%);
+        -webkit-background-clip: text;
+                background-clip: text;
+        color: transparent;
+        animation: flicker404 3.4s ease-in-out infinite;
+        letter-spacing: -0.05em;
+        text-shadow: 0 0 60px rgba(250, 204, 21, 0.18);
+      }
+      .bolt-bg {
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        pointer-events: none;
+        animation: boltStrike 0.9s ease-out forwards;
+      }
+      .flash-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(255,255,240,0.85) 0%, rgba(255,236,160,0.55) 30%, rgba(255,255,255,0) 75%);
+        animation: screenFlash 0.9s ease-out forwards;
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+      .home-btn:hover {
+        box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.25), 0 0 30px rgba(250, 204, 21, 0.55);
+      }
+    </style>
+  </head>
+  <body class="text-white antialiased relative font-sans">
+    <div id="bolt-stage" class="fixed inset-0 pointer-events-none z-0" aria-hidden="true"></div>
+    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <h1 class="glitched-404">404</h1>
+      <p class="text-2xl md:text-3xl font-bold mt-4 tracking-tight">
+        Struck by lightning <span aria-hidden="true">⚡</span>
+      </p>
+      <p class="text-base md:text-lg text-gray-300 mt-3 max-w-md">
+        This page wandered off into the storm and didn't make it home.
+      </p>
+      <a href="/" class="home-btn mt-9 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-gray-900 font-semibold transition-shadow shadow-lg">
+        <span aria-hidden="true">←</span> Back to safety
+      </a>
+      <p class="text-xs text-gray-400 mt-10">
+        coreylang.github.io
+      </p>
+    </main>
+    <script>
+      function generateBoltPath() {
+        const segments = 6 + Math.floor(Math.random() * 4);
+        const w = 220, h = 1000;
+        let x = w / 2, y = 0;
+        let d = `M ${x} ${y}`;
+        for (let i = 1; i <= segments; i++) {
+          const ny = (h / segments) * i;
+          const nx = w / 2 + (Math.random() - 0.5) * w * 0.85;
+          d += ` L ${nx} ${ny}`;
+          if (Math.random() < 0.45 && i < segments) {
+            const bx = nx + (Math.random() - 0.5) * w * 0.7;
+            const by = ny + (h / segments) * (0.4 + Math.random() * 0.5);
+            d += ` M ${nx} ${ny} L ${bx} ${by} M ${nx} ${ny}`;
+          }
+          x = nx; y = ny;
+        }
+        return d;
+      }
+
+      function spawnBolt() {
+        const stage = document.getElementById('bolt-stage');
+        if (!stage) return;
+
+        const flash = document.createElement('div');
+        flash.className = 'flash-bg';
+        stage.appendChild(flash);
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('class', 'bolt-bg');
+        svg.setAttribute('viewBox', '0 0 220 1000');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.style.left = Math.random() * Math.max(0, window.innerWidth - 220) + 'px';
+
+        const d = generateBoltPath();
+        const glow = document.createElementNS(svgNS, 'path');
+        glow.setAttribute('d', d);
+        glow.setAttribute('stroke', '#facc15');
+        glow.setAttribute('stroke-width', '14');
+        glow.setAttribute('stroke-linecap', 'round');
+        glow.setAttribute('stroke-linejoin', 'round');
+        glow.setAttribute('fill', 'none');
+        glow.setAttribute('opacity', '0.55');
+
+        const core = document.createElementNS(svgNS, 'path');
+        core.setAttribute('d', d);
+        core.setAttribute('stroke', '#ffffff');
+        core.setAttribute('stroke-width', '4');
+        core.setAttribute('stroke-linecap', 'round');
+        core.setAttribute('stroke-linejoin', 'round');
+        core.setAttribute('fill', 'none');
+
+        svg.appendChild(glow);
+        svg.appendChild(core);
+        stage.appendChild(svg);
+
+        setTimeout(() => { flash.remove(); svg.remove(); }, 950);
+      }
+
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduced) {
+        setTimeout(spawnBolt, 250);
+        setInterval(() => { if (Math.random() < 0.45) spawnBolt(); }, 1400);
+      }
+    </script>
+  </body>
+</html>
