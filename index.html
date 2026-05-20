@@ -235,6 +235,43 @@
         overflow: hidden;
         transform: skewX(-14deg);
         z-index: 1;
+        animation: windSway 7s ease-in-out infinite;
+      }
+      @keyframes windSway {
+        0%, 100% { transform: skewX(-10deg); }
+        50%      { transform: skewX(-20deg); }
+      }
+      #rain-stage.is-gusting {
+        animation: windGustBend 1.4s cubic-bezier(.22,.61,.36,1) forwards;
+      }
+      @keyframes windGustBend {
+        0%   { transform: skewX(-14deg); }
+        30%  { transform: skewX(-34deg); }
+        70%  { transform: skewX(-26deg); }
+        100% { transform: skewX(-14deg); }
+      }
+
+      /* Wind gusts — translucent curved wisps */
+      .wind-gust {
+        position: absolute;
+        left: 0;
+        height: 16px;
+        pointer-events: none;
+        z-index: 2;
+        overflow: visible;
+        filter: blur(0.4px);
+        animation: windWisp linear forwards;
+        opacity: 0;
+      }
+      @keyframes windWisp {
+        0%   { transform: translateX(-120%); opacity: 0; }
+        15%  { opacity: 1; }
+        85%  { opacity: 1; }
+        100% { transform: translateX(2200px); opacity: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wind-gust { display: none; }
+        #rain-stage { animation: none; }
       }
       .rain-drop {
         position: absolute;
@@ -959,6 +996,68 @@
         if (el) el.textContent = new Date().getFullYear();
       }
 
+      /* Wind — ambient wisps + periodic gusts that bend the rain */
+      function spawnWindWisp(parent) {
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('class', 'wind-gust');
+        svg.setAttribute('viewBox', '0 0 200 20');
+        svg.setAttribute('preserveAspectRatio', 'none');
+
+        const length = 90 + Math.random() * 140;
+        const topPct = 5 + Math.random() * 85;
+        const opacity = 0.3 + Math.random() * 0.45;
+        const duration = 0.7 + Math.random() * 0.7;
+
+        svg.style.top = topPct + '%';
+        svg.style.width = length + 'px';
+        svg.style.animationDuration = duration + 's';
+
+        const path = document.createElementNS(svgNS, 'path');
+        const wave = (Math.random() - 0.5) * 10;
+        const wave2 = (Math.random() - 0.5) * 6;
+        path.setAttribute('d', `M 0 10 Q 50 ${10 + wave}, 100 10 T 200 ${10 + wave2}`);
+        path.setAttribute('stroke', `rgba(255, 255, 255, ${opacity})`);
+        path.setAttribute('stroke-width', '1.1');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('fill', 'none');
+        svg.appendChild(path);
+
+        parent.appendChild(svg);
+        setTimeout(() => svg.remove(), duration * 1000 + 250);
+      }
+
+      function setupWind() {
+        const header = document.getElementById('lightning-container');
+        if (!header) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const rainStage = document.getElementById('rain-stage');
+
+        // Ambient wisps — sparse, constant
+        setInterval(() => {
+          if (Math.random() < 0.55) spawnWindWisp(header);
+        }, 1400);
+
+        // Periodic gusts — burst of wisps + rain bend
+        function scheduleGust() {
+          const delay = 3500 + Math.random() * 4500;
+          setTimeout(() => {
+            const burst = 2 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < burst; i++) {
+              setTimeout(() => spawnWindWisp(header), i * 90 + Math.random() * 60);
+            }
+            if (rainStage) {
+              rainStage.classList.remove('is-gusting');
+              void rainStage.offsetWidth; // restart animation
+              rainStage.classList.add('is-gusting');
+              setTimeout(() => rainStage.classList.remove('is-gusting'), 1500);
+            }
+            scheduleGust();
+          }, delay);
+        }
+        scheduleGust();
+      }
+
       /* Rain — individual streaks with varied speed, length, and opacity */
       function setupRain() {
         const container = document.getElementById('lightning-container');
@@ -987,6 +1086,7 @@
       document.addEventListener('DOMContentLoaded', () => {
         setupCopyrightYear();
         setupRain();
+        setupWind();
         setupTimeOfDay();
         setupThunderToggle();
         setupScrollReveal();
