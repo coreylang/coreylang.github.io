@@ -996,11 +996,14 @@
 
         let ticking = false;
         function update() {
-          const line = window.innerHeight * 0.35;
+          const midpoint = window.innerHeight / 2;
           let active = targets[0];
           for (const t of targets) {
-            const rect = t.el.getBoundingClientRect();
-            if (rect.top <= line) active = t;
+            if (t.el.getBoundingClientRect().top <= midpoint) active = t;
+          }
+          // When scrolled to the bottom, always activate the last section
+          if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+            active = targets[targets.length - 1];
           }
           targets.forEach(t => t.dot.classList.toggle('is-active', t === active));
           ticking = false;
