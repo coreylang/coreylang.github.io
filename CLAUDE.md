@@ -67,7 +67,7 @@ Corey's role was Full-Stack Developer (2025–2026).
 - **Name**: Christopher "Corey" Lang (goes by middle name)
 - **Location**: Shawnee, KS
 - **Email**: coreylang.dev@gmail.com
-- **Phone**: (913) 952-7686
+- **Phone**: (816) 506-0057
 - **GitHub**: https://github.com/coreylang
 - **LinkedIn**: https://www.linkedin.com/in/corey-lang-2b3b28185/
 
