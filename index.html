@@ -1194,15 +1194,11 @@
 
         const clone = source.cloneNode(true);
         clone.classList.remove('hidden');
-        clone.style.position = 'fixed';
-        clone.style.left = '0';
-        clone.style.top = '0';
-        clone.style.width = '8.5in';
-        clone.style.background = '#ffffff';
-        clone.style.zIndex = '-1';
-        clone.style.opacity = '0';
-        clone.style.pointerEvents = 'none';
-        document.body.appendChild(clone);
+
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'position:fixed;left:-10000px;top:0;width:8.5in;background:#ffffff;';
+        wrapper.appendChild(clone);
+        document.body.appendChild(wrapper);
 
         showToast('Generating PDF…');
 
@@ -1220,7 +1216,7 @@
         } catch (err) {
           showToast('PDF generation failed');
         } finally {
-          clone.remove();
+          wrapper.remove();
         }
       }
 
