@@ -56,6 +56,7 @@
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
       @keyframes typing {
         from { width: 0 }
@@ -1181,6 +1182,48 @@
         }, 250);
       }
 
+      /* Generate downloadable PDF from the print view */
+      async function downloadResumePDF(event) {
+        if (event) event.preventDefault();
+        if (typeof html2pdf !== 'function') {
+          showToast('PDF library failed to load');
+          return;
+        }
+        const source = document.querySelector('.hidden.print\\:block');
+        if (!source) return;
+
+        const clone = source.cloneNode(true);
+        clone.classList.remove('hidden');
+        clone.style.position = 'fixed';
+        clone.style.left = '0';
+        clone.style.top = '0';
+        clone.style.width = '8.5in';
+        clone.style.background = '#ffffff';
+        clone.style.zIndex = '-1';
+        clone.style.opacity = '0';
+        clone.style.pointerEvents = 'none';
+        document.body.appendChild(clone);
+
+        showToast('Generating PDF…');
+
+        const opt = {
+          margin:       [0.4, 0.4, 0.4, 0.4],
+          filename:     'Christopher_Corey_Lang_Resume.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+          pagebreak:    { mode: ['css', 'legacy'] }
+        };
+
+        try {
+          await html2pdf().set(opt).from(clone).save();
+        } catch (err) {
+          showToast('PDF generation failed');
+        } finally {
+          clone.remove();
+        }
+      }
+
       /* Print QR code */
       function setupPrintQR() {
         if (typeof qrcode !== 'function') return;
@@ -1761,7 +1804,7 @@
         </a>
       </p>
       <p class="mb-2">
-        <a href="./Christopher_Corey_Lang_Resume.pdf" download class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium glow-link">
+        <a href="#" onclick="downloadResumePDF(event); return false;" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium glow-link">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12v6m0 0l-3-3m3 3l3-3M12 4v8" />
           </svg>
