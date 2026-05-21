@@ -996,10 +996,13 @@
 
         let ticking = false;
         function update() {
-          const midpoint = window.innerHeight / 2;
+          // Use a small, viewport-independent activation line near the top of
+          // the viewport. Must stay smaller than the first non-Top section's
+          // top edge so that scrolling fully back to the top reactivates "Top".
+          const line = Math.min(window.innerHeight * 0.2, 200);
           let active = targets[0];
           for (const t of targets) {
-            if (t.el.getBoundingClientRect().top <= midpoint) active = t;
+            if (t.el.getBoundingClientRect().top <= line) active = t;
           }
           // When scrolled to the bottom, always activate the last section
           if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
@@ -1008,12 +1011,14 @@
           targets.forEach(t => t.dot.classList.toggle('is-active', t === active));
           ticking = false;
         }
-        window.addEventListener('scroll', () => {
+        function requestUpdate() {
           if (!ticking) {
             requestAnimationFrame(update);
             ticking = true;
           }
-        }, { passive: true });
+        }
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate, { passive: true });
         update();
       }
 
