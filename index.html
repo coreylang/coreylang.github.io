@@ -23,14 +23,12 @@
     <meta property="og:title" content="Christopher 'Corey' Lang — Software Engineer" />
     <meta property="og:description" content="Full-stack software engineer with 16+ years of experience in PHP, Laravel, Python, Node.js, React, and Vue." />
     <meta property="og:url" content="https://coreylang.github.io/" />
-    <meta property="og:image" content="https://coreylang.github.io/favicon.png" />
+    <meta property="og:image" content="https://coreylang.github.io/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Christopher 'Corey' Lang — Full-stack engineer, 16+ years building the web" />
     <meta property="profile:first_name" content="Christopher" />
     <meta property="profile:last_name" content="Lang" />
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Christopher 'Corey' Lang — Software Engineer" />
-    <meta name="twitter:description" content="Full-stack software engineer with 16+ years of experience in PHP, Laravel, Python, Node.js, React, and Vue." />
-    <meta name="twitter:image" content="https://coreylang.github.io/favicon.png" />
 
     <script type="application/ld+json">
     {
@@ -55,6 +53,16 @@
     }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Apply dark mode before render to avoid flash of light theme.
+      (function() {
+        try {
+          var stored = localStorage.getItem('darkMode');
+          var dark = stored === 'true' || (stored === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (_) {}
+      })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <style>
       @keyframes typing {
@@ -335,7 +343,7 @@
         font-weight: 500;
         border: 1px solid rgba(0, 0, 0, 0.06);
         transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
-        cursor: default;
+        cursor: pointer;
         letter-spacing: 0.01em;
       }
       .skill-chip:hover {
@@ -344,6 +352,46 @@
         transform: translateY(-2px);
         box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25), 0 0 14px rgba(59, 130, 246, 0.45);
       }
+      .skill-chip.is-active {
+        background: linear-gradient(135deg, #3b82f6, #6b21a8);
+        color: #fff;
+        box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.6), 0 0 14px rgba(124, 58, 237, 0.55);
+      }
+
+      /* Tech-stack filter dimming */
+      .tech-stack { cursor: pointer; transition: color 0.15s ease; }
+      .tech-stack:hover { color: #1e3a8a; }
+      .tech-filter-dim { opacity: 0.18; transition: opacity 0.25s ease; }
+      .tech-filter-banner {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        margin: 0 auto 0.5rem;
+        max-width: fit-content;
+        background: rgba(17, 24, 39, 0.94);
+        color: #fff;
+        padding: 0.4rem 0.85rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      }
+      .tech-filter-banner.is-visible { display: inline-flex; }
+      .tech-filter-banner button {
+        background: rgba(255,255,255,0.18);
+        border: none;
+        color: #fff;
+        width: 1.1rem; height: 1.1rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        line-height: 1;
+        cursor: pointer;
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+      .tech-filter-banner button:hover { background: rgba(255,255,255,0.32); }
+      @media print { .tech-filter-banner { display: none !important; } .tech-filter-dim { opacity: 1 !important; } }
 
       /* Stat counters */
       .stat-grid {
@@ -704,6 +752,120 @@
       #thunder-toggle.is-on .mute-x { display: none; }
       #thunder-toggle.is-on .sound-waves { display: inline; }
       @media print { #thunder-toggle { display: none !important; } }
+
+      /* Dark mode toggle */
+      #dark-mode-toggle {
+        position: fixed;
+        bottom: 1rem;
+        right: 3.75rem;
+        z-index: 10000;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
+      #dark-mode-toggle:hover { transform: scale(1.08); background: #fff; }
+      #dark-mode-toggle svg { width: 1.25rem; height: 1.25rem; color: #374151; }
+      #dark-mode-toggle .icon-moon { display: none; }
+      html.dark #dark-mode-toggle { background: rgba(30, 41, 59, 0.92); }
+      html.dark #dark-mode-toggle:hover { background: #1e293b; }
+      html.dark #dark-mode-toggle svg { color: #facc15; }
+      html.dark #dark-mode-toggle .icon-sun { display: none; }
+      html.dark #dark-mode-toggle .icon-moon { display: inline; }
+      html.dark #thunder-toggle { background: rgba(30, 41, 59, 0.92); }
+      html.dark #thunder-toggle:hover { background: #1e293b; }
+      html.dark #thunder-toggle svg { color: #cbd5e1; }
+      @media print { #dark-mode-toggle { display: none !important; } }
+
+      /* Dark mode overrides — applied when html.dark is set */
+      html.dark { color-scheme: dark; }
+      html.dark body { background: #0b1220; color: #e2e8f0; }
+
+      /* Backgrounds */
+      html.dark .bg-white { background-color: #1e293b; }
+      html.dark .bg-gray-100 { background-color: #0f172a; }
+      html.dark .animated-sidebar {
+        background: linear-gradient(270deg, #1e1b4b, #0f172a);
+        background-size: 400% 400%;
+      }
+
+      /* Text colors */
+      html.dark .text-gray-900 { color: #f1f5f9; }
+      html.dark .text-gray-800 { color: #e2e8f0; }
+      html.dark .text-gray-700 { color: #cbd5e1; }
+      html.dark .text-gray-600 { color: #94a3b8; }
+      html.dark .text-gray-500 { color: #94a3b8; }
+      html.dark .text-gray-400 { color: #94a3b8; }
+      html.dark .text-gray-200 { color: #e2e8f0; }
+      html.dark .text-blue-600 { color: #60a5fa; }
+      html.dark .text-blue-700 { color: #60a5fa; }
+      html.dark .text-blue-800 { color: #93c5fd; }
+      html.dark .text-blue-900 { color: #bfdbfe; }
+      html.dark .text-purple-700 { color: #c4b5fd; }
+      html.dark .text-green-700 { color: #6ee7b7; }
+      html.dark .text-red-600 { color: #fca5a5; }
+
+      /* Borders */
+      html.dark .border-gray-300 { border-color: #334155; }
+      html.dark .border-white { border-color: #1e293b; }
+
+      /* Sidebar glass */
+      html.dark .sidebar-glass {
+        background: rgba(15, 23, 42, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+      }
+
+      /* Skill chip */
+      html.dark .skill-chip {
+        background: rgba(30, 41, 59, 0.7);
+        color: #e2e8f0;
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+      html.dark .skill-chip:hover {
+        background: #1e293b;
+        color: #facc15;
+      }
+
+      /* Featured project cards */
+      html.dark .project-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      html.dark .project-card:hover {
+        border-color: rgba(96, 165, 250, 0.55);
+      }
+
+      /* Stat counters */
+      html.dark .stat {
+        background: linear-gradient(180deg, rgba(30, 41, 59, 0.55), rgba(30, 41, 59, 0));
+      }
+      html.dark .stat-label { color: #94a3b8; }
+
+      /* Toast already dark — leave it */
+      /* Section-nav dots */
+      html.dark .section-dot { background: rgba(148, 163, 184, 0.32); }
+      html.dark .section-dot.is-active { background: #facc15; box-shadow: 0 0 10px rgba(250, 204, 21, 0.6); }
+
+      /* Print view should stay light no matter what */
+      html.dark .hidden.print\:block,
+      html.dark .hidden.print\:block *,
+      html.dark #print-qr,
+      html.dark #print-qr-code svg { color: initial; background: initial; border-color: initial; }
+
+      /* Highlight flash adjustment */
+      html.dark .highlight-flash { animation-name: highlightFlashDark; }
+      @keyframes highlightFlashDark {
+        0%   { box-shadow: 0 0 0 0 rgba(250,204,21,0);   background-color: rgba(250,204,21,0); }
+        12%  { box-shadow: 0 0 0 10px rgba(250,204,21,0.45); background-color: rgba(250,204,21,0.10); }
+        100% { box-shadow: 0 0 0 0 rgba(250,204,21,0);   background-color: rgba(250,204,21,0); }
+      }
     </style>
     <script>
       function parseResumeToJSON() {
@@ -912,6 +1074,27 @@
         source.connect(lowpass).connect(gain).connect(ctx.destination);
         source.start(now);
         source.stop(now + duration + 0.1);
+      }
+
+      function setupDarkMode() {
+        const btn = document.getElementById('dark-mode-toggle');
+        if (!btn) return;
+        let stored = null;
+        try { stored = localStorage.getItem('darkMode'); } catch (_) {}
+        let isDark;
+        if (stored === 'true' || stored === 'false') {
+          isDark = stored === 'true';
+        } else {
+          isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        document.documentElement.classList.toggle('dark', isDark);
+        btn.setAttribute('aria-pressed', String(isDark));
+        btn.addEventListener('click', () => {
+          isDark = !document.documentElement.classList.contains('dark');
+          document.documentElement.classList.toggle('dark', isDark);
+          try { localStorage.setItem('darkMode', String(isDark)); } catch (_) {}
+          btn.setAttribute('aria-pressed', String(isDark));
+        });
       }
 
       function setupThunderToggle() {
@@ -1199,6 +1382,128 @@
         if (el) el.textContent = new Date().getFullYear();
       }
 
+      /* Tech-stack filter — click a skill chip or [tech] label to filter timeline */
+      let activeTechFilter = null;
+
+      function parseTechList(text) {
+        const inside = (text.match(/\[([^\]]+)\]/) || [, text])[1] || '';
+        return inside.split(/,\s*/).map(t => t.trim()).filter(Boolean);
+      }
+
+      function techMatches(entry, filter) {
+        const e = entry.toLowerCase();
+        const f = filter.toLowerCase();
+        if (e === f) return true;
+        if (e.startsWith(f + ' ') || e.startsWith(f + '.')) return true;
+        return false;
+      }
+
+      function applyTechFilter(tech) {
+        activeTechFilter = tech;
+        const bullets = document.querySelectorAll('.job ul > li');
+        bullets.forEach(li => {
+          const stackEl = li.querySelector('.tech-stack');
+          if (!stackEl) {
+            li.classList.add('tech-filter-dim');
+            return;
+          }
+          const list = parseTechList(stackEl.textContent);
+          const ok = list.some(t => techMatches(t, tech));
+          li.classList.toggle('tech-filter-dim', !ok);
+        });
+        // Dim job blocks whose bullets are all dimmed
+        document.querySelectorAll('.job').forEach(job => {
+          const lis = job.querySelectorAll('ul > li');
+          const anyVisible = Array.from(lis).some(li => !li.classList.contains('tech-filter-dim'));
+          job.classList.toggle('tech-filter-dim', lis.length > 0 && !anyVisible);
+        });
+        document.querySelectorAll('.skill-chip').forEach(c => {
+          c.classList.toggle('is-active', c.textContent.trim().toLowerCase() === tech.toLowerCase());
+        });
+        const banner = document.getElementById('tech-filter-banner');
+        const label = document.getElementById('tech-filter-label');
+        if (banner && label) {
+          label.textContent = tech;
+          banner.classList.add('is-visible');
+        }
+      }
+
+      function clearTechFilter() {
+        activeTechFilter = null;
+        document.querySelectorAll('.tech-filter-dim').forEach(el => el.classList.remove('tech-filter-dim'));
+        document.querySelectorAll('.skill-chip.is-active').forEach(c => c.classList.remove('is-active'));
+        const banner = document.getElementById('tech-filter-banner');
+        if (banner) banner.classList.remove('is-visible');
+      }
+
+      function setupTechFilter() {
+        document.querySelectorAll('.skill-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const tech = chip.textContent.trim();
+            if (activeTechFilter && activeTechFilter.toLowerCase() === tech.toLowerCase()) {
+              clearTechFilter();
+            } else {
+              applyTechFilter(tech);
+            }
+          });
+        });
+        document.querySelectorAll('.tech-stack').forEach(el => {
+          el.addEventListener('click', (e) => {
+            const list = parseTechList(el.textContent);
+            if (!list.length) return;
+            const tech = list[0];
+            if (activeTechFilter && activeTechFilter.toLowerCase() === tech.toLowerCase()) {
+              clearTechFilter();
+            } else {
+              applyTechFilter(tech);
+            }
+          });
+        });
+      }
+
+      /* GitHub activity — fetch latest public repos and render in sidebar */
+      function relativeTime(iso) {
+        const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+        const units = [
+          [60, 'second'], [60, 'minute'], [24, 'hour'],
+          [7, 'day'], [4.345, 'week'], [12, 'month'], [Infinity, 'year']
+        ];
+        let value = diff, unit = 'second';
+        for (const [size, name] of units) {
+          if (value < size) { unit = name; break; }
+          value /= size;
+        }
+        const rounded = Math.floor(value);
+        return rounded + ' ' + unit + (rounded === 1 ? '' : 's') + ' ago';
+      }
+
+      async function setupGithubActivity() {
+        const list = document.getElementById('github-activity');
+        if (!list) return;
+        try {
+          const res = await fetch('https://api.github.com/users/coreylang/repos?sort=updated&per_page=5');
+          if (!res.ok) throw new Error(res.status);
+          const repos = await res.json();
+          if (!Array.isArray(repos) || repos.length === 0) {
+            list.innerHTML = '<li class="text-gray-500 italic">No public repos found.</li>';
+            return;
+          }
+          list.innerHTML = repos.map(r => {
+            const desc = (r.description || '').slice(0, 80);
+            const lang = r.language ? `<span class="inline-block text-[10px] uppercase tracking-wider text-gray-500 mr-2">${r.language}</span> ` : '';
+            return `
+              <li class="leading-snug">
+                <a href="${r.html_url}" target="_blank" rel="noopener" class="text-blue-700 hover:text-blue-900 font-medium">${r.name}</a>
+                ${desc ? `<div class="text-xs text-gray-600">${desc}</div>` : ''}
+                <div class="mt-0.5">${lang}<span class="text-[10px] text-gray-400">${relativeTime(r.updated_at)}</span></div>
+              </li>
+            `;
+          }).join('');
+        } catch (err) {
+          list.innerHTML = '<li class="text-gray-500 italic">Unable to load.</li>';
+        }
+      }
+
       /* Wind — ambient wisps + periodic gusts that bend the rain */
       function spawnWindWisp(parent) {
         const svgNS = 'http://www.w3.org/2000/svg';
@@ -1287,6 +1592,7 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
+        setupDarkMode();
         setupCopyrightYear();
         setupRain();
         setupWind();
@@ -1301,6 +1607,8 @@
         setupMonogramStorm();
         setupPrintQR();
         setupDeepLink();
+        setupGithubActivity();
+        setupTechFilter();
       });
 
       setInterval(() => {
@@ -1321,6 +1629,22 @@
       <a href="#jobs" data-target="jobs" data-label="Job History" class="section-dot" aria-label="Job History"></a>
       <a href="#education" data-target="education" data-label="Education" class="section-dot" aria-label="Education"></a>
     </nav>
+    <button id="dark-mode-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path>
+        <path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path>
+        <path d="m19.07 4.93-1.41 1.41"></path>
+      </svg>
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </button>
     <button id="thunder-toggle" type="button" aria-label="Toggle thunder sound" title="Toggle thunder sound">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
@@ -1427,6 +1751,12 @@
             <li><strong>Robert Brunkow</strong> – (913) 624-0524 · rbrunkowaftkc@gmail.com</li>
           </ul>
         </div>
+        <div class="print:hidden">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Latest on GitHub</h2>
+          <ul id="github-activity" class="text-gray-700 text-sm space-y-2">
+            <li class="text-gray-500 italic">Loading…</li>
+          </ul>
+        </div>
         </div>
         <div class="sidebar-pulse" aria-hidden="true"></div>
        </div>
@@ -1510,6 +1840,10 @@
         <section id="jobs" class="p-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-1">Job History & Projects</h2>
         </section>
+        <div id="tech-filter-banner" class="tech-filter-banner" role="status" aria-live="polite">
+          <span>Filtering by <strong id="tech-filter-label">—</strong></span>
+          <button type="button" aria-label="Clear filter" onclick="clearTechFilter()">✕</button>
+        </div>
         <section class="max-w-4xl mx-auto px-6 pt-1 pb-6">
           <div class="timeline relative border-l-4 border-gray-300 pl-6 space-y-12">
             <!-- Home Buyer Nation -->

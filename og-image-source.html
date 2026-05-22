@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(124, 58, 237, 0.45) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(59, 130, 246, 0.40) 0%, transparent 60%),
+        linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      position: relative;
+      color: #fff;
+    }
+
+    /* Rain streaks */
+    .rain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      transform: skewX(-14deg);
+      overflow: hidden;
+    }
+    .rain span {
+      position: absolute;
+      top: -40px;
+      width: 1px;
+      height: 70px;
+      background: linear-gradient(180deg, transparent 0%, #cfe1ff 60%, transparent 100%);
+    }
+
+    /* Lightning bolt */
+    .bolt {
+      position: absolute;
+      top: 40px;
+      right: 50px;
+      width: 150px;
+      height: 290px;
+      z-index: 1;
+      filter:
+        drop-shadow(0 0 10px #facc15)
+        drop-shadow(0 0 30px rgba(250, 204, 21, 0.7))
+        drop-shadow(0 0 70px rgba(250, 204, 21, 0.45));
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 44px 72px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .top { display: flex; align-items: center; gap: 18px; }
+    .monogram {
+      width: 72px; height: 72px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #3b82f6, #6b21a8);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      box-shadow:
+        0 0 0 4px rgba(255, 255, 255, 0.18),
+        0 0 28px rgba(124, 58, 237, 0.65);
+    }
+    .top-text { display: flex; flex-direction: column; gap: 4px; }
+    .top-text .label {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: #facc15;
+      font-weight: 600;
+    }
+    .top-text .url {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.78);
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+    }
+
+    .main h1 {
+      font-size: 68px;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 920px;
+      text-shadow:
+        2px 2px 0 rgba(30, 58, 138, 0.7),
+        4px 4px 0 rgba(147, 51, 234, 0.55);
+    }
+    .main h1 .accent {
+      background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: none;
+    }
+    .main h2 {
+      margin-top: 16px;
+      font-size: 32px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.88);
+      letter-spacing: 0.01em;
+    }
+
+    .bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
+    .stack {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      max-width: 680px;
+    }
+    .chip {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
+    .meta {
+      text-align: right;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 17px;
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+    .meta strong { color: #facc15; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="rain" id="rain"></div>
+
+  <svg class="bolt" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M58 0 L20 110 L48 110 L34 200 L84 78 L54 78 L72 0 Z"
+          fill="#facc15" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="content">
+    <div class="top">
+      <div class="monogram">CL</div>
+      <div class="top-text">
+        <div class="label">⚡ Software Engineer</div>
+        <div class="url">coreylang.github.io</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <h1>Christopher <span class="accent">"Corey"</span> Lang</h1>
+      <h2>Full-stack engineer · 16+ years building the web</h2>
+    </div>
+
+    <div class="bottom">
+      <div class="stack">
+        <span class="chip">PHP</span>
+        <span class="chip">Laravel</span>
+        <span class="chip">Python</span>
+        <span class="chip">Node.js</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">React</span>
+        <span class="chip">Vue</span>
+      </div>
+      <div class="meta">
+        Shawnee, KS<br/>
+        <strong>Available for work</strong>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const rain = document.getElementById('rain');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('span');
+      s.style.left = (Math.random() * 1400 - 100) + 'px';
+      s.style.top = (Math.random() * 700 - 80) + 'px';
+      s.style.opacity = (0.4 + Math.random() * 0.6).toFixed(2);
+      s.style.height = (40 + Math.random() * 60) + 'px';
+      rain.appendChild(s);
+    }
+  </script>
+</body>
+</html>
