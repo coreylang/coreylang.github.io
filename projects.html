@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4GREHHVJ5K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-4GREHHVJ5K');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Projects — Christopher 'Corey' Lang</title>
+    <meta name="description" content="A showcase of projects built by Christopher 'Corey' Lang — The Status, Home Buyer Nation, AJ Lang Property Management, and the open-source PHP ElevenLabs AI library." />
+    <meta name="author" content="Christopher 'Corey' Lang" />
+    <link rel="canonical" href="https://coreylang.github.io/projects.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Projects — Christopher 'Corey' Lang" />
+    <meta property="og:description" content="An interactive showcase of full-stack projects: real-time apps, real estate platforms, and open-source libraries." />
+    <meta property="og:url" content="https://coreylang.github.io/projects.html" />
+    <meta property="og:image" content="https://coreylang.github.io/og-image.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Apply dark mode before render to avoid flash of light theme.
+      (function() {
+        try {
+          var stored = localStorage.getItem('darkMode');
+          var dark = stored === 'true' || (stored === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (_) {}
+      })();
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { overflow-x: hidden; }
+      a { text-decoration: none; }
+
+      /* Animated gradient (shared with résumé) */
+      @keyframes gradientShift {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .animated-gradient {
+        background: linear-gradient(270deg, #6b21a8, #3b82f6);
+        background-size: 400% 400%;
+        animation: gradientShift 10s ease infinite;
+      }
+
+      /* Top nav */
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(12px) saturate(140%);
+        -webkit-backdrop-filter: blur(12px) saturate(140%);
+        background: rgba(255,255,255,0.72);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+      }
+      html.dark .top-nav {
+        background: rgba(15,23,42,0.72);
+        border-bottom: 1px solid rgba(148,163,184,0.16);
+      }
+      .nav-link {
+        position: relative;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #475569;
+        transition: color 0.18s ease;
+      }
+      .nav-link:hover { color: #1e3a8a; }
+      html.dark .nav-link { color: #cbd5e1; }
+      html.dark .nav-link:hover { color: #facc15; }
+      .nav-link.is-active { color: #1e3a8a; }
+      html.dark .nav-link.is-active { color: #facc15; }
+
+      /* Hero subtitle typewriter caret */
+      @keyframes blink { 0%,100% { opacity: 1 } 50% { opacity: 0 } }
+      .caret { border-right: 2px solid #facc15; animation: blink 0.9s step-end infinite; padding-right: 2px; }
+
+      /* ===== Interactive project showcase ===== */
+      .tilt-scene { perspective: 1400px; }
+      .tilt {
+        --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
+        position: relative;
+        transform-style: preserve-3d;
+        transform: rotateX(var(--rx)) rotateY(var(--ry));
+        transition: transform 0.25s cubic-bezier(.2,.7,.3,1), box-shadow 0.25s ease;
+        border-radius: 0.85rem;
+        will-change: transform;
+      }
+
+      /* Browser-chrome mockup */
+      .browser {
+        border-radius: 0.85rem;
+        overflow: hidden;
+        background: #e5e7eb;
+        border: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 18px 40px rgba(15,23,42,0.18);
+        transition: box-shadow 0.25s ease;
+      }
+      html.dark .browser {
+        background: #1e293b;
+        border-color: rgba(148,163,184,0.18);
+        box-shadow: 0 18px 50px rgba(0,0,0,0.5);
+      }
+      .tilt:hover .browser {
+        box-shadow: 0 30px 70px rgba(15,23,42,0.28),
+                    0 0 0 1px var(--accent, #3b82f6),
+                    0 0 36px -6px var(--accent, #3b82f6);
+      }
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.55rem 0.8rem;
+        background: linear-gradient(180deg, #f1f5f9, #e2e8f0);
+      }
+      html.dark .browser-bar { background: linear-gradient(180deg, #334155, #1e293b); }
+      .browser-dots { display: flex; gap: 0.4rem; flex-shrink: 0; }
+      .browser-dots span { width: 0.7rem; height: 0.7rem; border-radius: 9999px; display: block; }
+      .browser-url {
+        flex: 1;
+        font-size: 0.72rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: #64748b;
+        background: rgba(255,255,255,0.7);
+        border-radius: 9999px;
+        padding: 0.25rem 0.7rem;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      html.dark .browser-url { background: rgba(15,23,42,0.6); color: #94a3b8; }
+      .browser-screen {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        aspect-ratio: 1280 / 760;
+      }
+      .browser-screen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+        /* parallax: image drifts opposite the tilt */
+        transform: translateZ(40px) scale(1.04) translate(calc((var(--ry) / 14) * -10px), calc((var(--rx) / 14) * 10px));
+        transition: transform 0.25s cubic-bezier(.2,.7,.3,1);
+      }
+      /* moving glare that follows the cursor */
+      .browser-screen::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,0.35), rgba(255,255,255,0) 45%);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        pointer-events: none;
+      }
+      .tilt:hover .browser-screen::after { opacity: 1; }
+
+      /* floating accent badge above the frame */
+      .float-badge {
+        position: absolute;
+        top: -1rem;
+        left: -1rem;
+        z-index: 5;
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.55rem;
+        color: #fff;
+        transform: translateZ(60px);
+        box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+      }
+
+      .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(.2,.7,.3,1), transform 0.7s cubic-bezier(.2,.7,.3,1); }
+      .reveal.is-visible { opacity: 1; transform: none; }
+
+      .tech-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.6rem;
+        border-radius: 9999px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        background: rgba(148,163,184,0.16);
+        color: #475569;
+        border: 1px solid rgba(148,163,184,0.25);
+      }
+      html.dark .tech-tag { background: rgba(148,163,184,0.12); color: #cbd5e1; border-color: rgba(148,163,184,0.2); }
+
+      .visit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #fff;
+        padding: 0.55rem 1.1rem;
+        border-radius: 0.6rem;
+        transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      }
+      .visit-btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 10px 24px -6px var(--accent, #3b82f6); }
+      .visit-btn svg { transition: transform 0.2s ease; }
+      .visit-btn:hover svg { transform: translateX(3px); }
+
+      .feat-list li { position: relative; padding-left: 1.2rem; }
+      .feat-list li::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0.45rem;
+        width: 0.7rem; height: 0.7rem;
+        background-color: var(--accent, #3b82f6);
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 2L4.09 12.97L11 13L9.5 22L20 9.5L13 9L15.5 2Z'/%3E%3C/svg%3E") no-repeat center / contain;
+                mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 2L4.09 12.97L11 13L9.5 22L20 9.5L13 9L15.5 2Z'/%3E%3C/svg%3E") no-repeat center / contain;
+      }
+
+      /* Dark mode toggle (shared pattern with résumé) */
+      #dark-mode-toggle {
+        position: fixed; bottom: 1rem; right: 1rem; z-index: 10000;
+        width: 2.5rem; height: 2.5rem; border-radius: 9999px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: transform 0.15s ease, background 0.15s ease;
+      }
+      #dark-mode-toggle:hover { transform: scale(1.08); background: #fff; }
+      #dark-mode-toggle svg { width: 1.25rem; height: 1.25rem; color: #374151; }
+      #dark-mode-toggle .icon-moon { display: none; }
+      html.dark #dark-mode-toggle { background: rgba(30,41,59,0.92); }
+      html.dark #dark-mode-toggle:hover { background: #1e293b; }
+      html.dark #dark-mode-toggle svg { color: #facc15; }
+      html.dark #dark-mode-toggle .icon-sun { display: none; }
+      html.dark #dark-mode-toggle .icon-moon { display: inline; }
+
+      /* Dark-mode surface overrides */
+      html.dark { color-scheme: dark; }
+      html.dark body { background: #0b1220; color: #e2e8f0; }
+      html.dark .bg-gray-100 { background-color: #0b1220; }
+      html.dark .bg-white { background-color: #1e293b; }
+      html.dark .text-gray-900 { color: #f1f5f9; }
+      html.dark .text-gray-800 { color: #e2e8f0; }
+      html.dark .text-gray-700 { color: #cbd5e1; }
+      html.dark .text-gray-600 { color: #94a3b8; }
+      html.dark .text-gray-500 { color: #94a3b8; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animated-gradient { animation: none; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+        .tilt { transition: none; }
+        .browser-screen img { transition: none; }
+        .caret { animation: none; }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans antialiased">
+    <button id="dark-mode-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path><path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path><path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+      </svg>
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </button>
+
+    <!-- Top navigation -->
+    <nav class="top-nav">
+      <div class="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 font-semibold text-gray-800">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-white text-sm font-bold" style="background:linear-gradient(135deg,#3b82f6,#6b21a8)">CL</span>
+          <span class="hidden sm:inline">Corey Lang</span>
+        </a>
+        <div class="flex items-center gap-5">
+          <a href="index.html" class="nav-link">Résumé</a>
+          <a href="projects.html" class="nav-link is-active">Projects</a>
+          <a href="mailto:coreylang.dev@gmail.com" class="nav-link">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="animated-gradient text-white">
+      <div class="max-w-5xl mx-auto px-5 py-16 text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold tracking-tight">Things I've Built</h1>
+        <p class="mt-4 text-lg text-blue-50/90 max-w-2xl mx-auto">
+          A closer look at the apps, platforms, and open-source work behind the résumé bullets.
+        </p>
+        <p class="mt-5 text-sm text-blue-100/80 font-mono">
+          <span class="text-green-300">~/projects</span> $ ls -la<span class="caret"></span>
+        </p>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-5 py-16 space-y-24">
+
+      <!-- ===== The Status ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#dc2626">
+        <div class="tilt-scene order-1">
+          <div class="tilt">
+            <div class="float-badge" style="background:#dc2626">📺</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">thestatus.dev</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/thestatus.png" alt="The Status landing page" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="order-2">
+          <p class="text-xs uppercase tracking-widest text-red-600 font-semibold mb-2">Full-Stack · 2025–2026</p>
+          <h2 class="text-3xl font-bold text-gray-900">The Status</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            A real-time order-status display for service businesses — restaurants, food trucks, coffee shops, and auto shops. Orders progress live on customer-facing TV monitors, cutting down "is it ready yet?" anxiety.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Real-time order tracking over WebSockets with polling fallback.</li>
+            <li>Three customizable stages: Initial → In Progress → Complete.</li>
+            <li>React dashboard (JWT auth) plus a Flutter mobile app, <em>The Status Lite</em>.</li>
+            <li>REST API with dual auth — JWT for users, API keys for POS webhooks.</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tech-tag">TypeScript</span><span class="tech-tag">Express.js</span><span class="tech-tag">Prisma</span><span class="tech-tag">MySQL</span><span class="tech-tag">React</span><span class="tech-tag">Flutter</span>
+          </div>
+          <a href="https://thestatus.dev" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#dc2626">
+            Visit thestatus.dev
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ===== Home Buyer Nation ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#2B3679">
+        <div class="tilt-scene md:order-2">
+          <div class="tilt">
+            <div class="float-badge" style="background:#2B3679">🏠</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">hbnation.co</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/hbnation.png" alt="Home Buyer Nation landing page" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="md:order-1">
+          <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#2B3679">Full-Stack · 2025–Present</p>
+          <h2 class="text-3xl font-bold text-gray-900">Home Buyer Nation</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            A real estate web application built as an alternative to Zillow — connecting buyers, sellers, agents, and service providers in one platform. My current role.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Tailored experiences for four audiences: buyers, sellers, agents, and pros.</li>
+            <li>Laravel 11 API backing a reactive Vue.js front end.</li>
+            <li>Listing search, agent discovery, and account flows.</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tech-tag">Laravel 11</span><span class="tech-tag">Vue.js</span><span class="tech-tag">Tailwind CSS</span><span class="tech-tag">MySQL</span>
+          </div>
+          <a href="https://hbnation.co" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#2B3679">
+            Visit hbnation.co
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- Section divider -->
+      <div class="reveal text-center">
+        <h2 class="text-2xl font-bold text-gray-900">Personal &amp; Freelance Projects</h2>
+        <p class="mt-2 text-gray-600 text-sm">Side work and open source.</p>
+      </div>
+
+      <!-- ===== AJ Lang Property Management ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#15803d">
+        <div class="tilt-scene order-1">
+          <div class="tilt">
+            <div class="float-badge" style="background:#15803d">🏡</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">ajlang.org</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/ajlang.png" alt="AJ Lang Property Management website" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="order-2">
+          <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#15803d">Freelance</p>
+          <h2 class="text-3xl font-bold text-gray-900">AJ Lang Property Management</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            A property management company website with browsable rental listings by type, online rent payment, and an application flow — built for a real local business.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Listings grouped by category with live availability and pricing.</li>
+            <li>Online rent payment and "ready to apply" entry points.</li>
+            <li>Server-driven SPA with Inertia.js bridging Laravel and React.</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tech-tag">Laravel</span><span class="tech-tag">React</span><span class="tech-tag">Inertia.js</span><span class="tech-tag">Tailwind CSS</span>
+          </div>
+          <a href="https://ajlang.org" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#15803d">
+            Visit ajlang.org
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ===== PHP ElevenLabs AI ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#9333ea">
+        <div class="tilt-scene md:order-2">
+          <div class="tilt">
+            <div class="float-badge" style="background:#9333ea">🎙️</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">coreylang.github.io/php-elevenlabs-ai</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/php-elevenlabs.png" alt="PHP ElevenLabs AI library documentation" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="md:order-1">
+          <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#9333ea">Open Source · MIT</p>
+          <h2 class="text-3xl font-bold text-gray-900">PHP ElevenLabs AI</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            An open-source PHP package that wraps the ElevenLabs Conversational AI API in a clean, developer-friendly interface — turn text into lifelike speech without wrestling with configs.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Intuitive methods for outbound calls, batch calling, and more.</li>
+            <li>Drops into any PHP app or framework.</li>
+            <li>Installable in one line via Composer.</li>
+          </ul>
+          <pre class="mt-4 text-xs rounded-lg px-3 py-2 overflow-x-auto" style="background:#0f172a;color:#e2e8f0"><code>composer require coreylang/php-elevenlabs-ai</code></pre>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="tech-tag">PHP</span><span class="tech-tag">Composer</span><span class="tech-tag">REST API</span><span class="tech-tag">MIT License</span>
+          </div>
+          <a href="https://coreylang.github.io/php-elevenlabs-ai/" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#9333ea">
+            View the docs
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="border-t border-gray-300 py-10 text-center text-sm text-gray-500">
+      <p class="mb-3">
+        <a href="index.html" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to the résumé
+        </a>
+      </p>
+      <p>© <span id="copyright-year">2025</span> Christopher "Corey" Lang. Licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="text-blue-600 hover:text-blue-800">CC BY-SA 4.0</a>.
+      </p>
+    </footer>
+
+    <script>
+      // Copyright year
+      document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+      // Dark mode toggle
+      (function() {
+        const btn = document.getElementById('dark-mode-toggle');
+        if (!btn) return;
+        let isDark = document.documentElement.classList.contains('dark');
+        btn.setAttribute('aria-pressed', String(isDark));
+        btn.addEventListener('click', () => {
+          isDark = !document.documentElement.classList.contains('dark');
+          document.documentElement.classList.toggle('dark', isDark);
+          try { localStorage.setItem('darkMode', String(isDark)); } catch (_) {}
+          btn.setAttribute('aria-pressed', String(isDark));
+        });
+      })();
+
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Scroll reveal
+      (function() {
+        const items = document.querySelectorAll('.reveal');
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          items.forEach(el => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        items.forEach(el => io.observe(el));
+      })();
+
+      // 3D tilt + parallax on hover
+      if (!reduceMotion) {
+        const DAMP = 12;
+        document.querySelectorAll('.tilt').forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+            card.style.setProperty('--rx', ((0.5 - py) * DAMP).toFixed(2) + 'deg');
+            card.style.setProperty('--ry', ((px - 0.5) * DAMP).toFixed(2) + 'deg');
+            card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+            card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--rx', '0deg');
+            card.style.setProperty('--ry', '0deg');
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
