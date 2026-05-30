@@ -142,6 +142,96 @@
         overflow: hidden;
         background: #fff;
         aspect-ratio: 1280 / 760;
+        cursor: zoom-in;
+      }
+      /* "click to expand" hint chip */
+      .zoom-hint {
+        position: absolute;
+        bottom: 0.6rem;
+        right: 0.6rem;
+        z-index: 4;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.25rem 0.55rem;
+        border-radius: 9999px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #fff;
+        background: rgba(15,23,42,0.72);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        pointer-events: none;
+      }
+      .tilt:hover .zoom-hint { opacity: 1; transform: translateY(0); }
+
+      /* ===== Lightbox ===== */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 11000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background: rgba(8,12,22,0.86);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s ease, visibility 0.25s ease;
+      }
+      .lightbox.is-open { opacity: 1; visibility: visible; }
+      .lightbox-inner {
+        position: relative;
+        max-width: min(1100px, 94vw);
+        max-height: 90vh;
+        margin: 0;
+        transform: scale(0.94);
+        transition: transform 0.25s cubic-bezier(.2,.7,.3,1);
+      }
+      .lightbox.is-open .lightbox-inner { transform: scale(1); }
+      .lightbox-inner img {
+        display: block;
+        max-width: 100%;
+        max-height: 82vh;
+        width: auto;
+        height: auto;
+        border-radius: 0.6rem;
+        box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+      }
+      .lightbox-cap {
+        margin-top: 0.75rem;
+        text-align: center;
+        font-size: 0.8rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: #cbd5e1;
+      }
+      .lightbox-close {
+        position: absolute;
+        top: -0.9rem;
+        right: -0.9rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 9999px;
+        border: none;
+        background: #fff;
+        color: #0f172a;
+        font-size: 1.25rem;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s ease;
+      }
+      .lightbox-close:hover { transform: scale(1.1); }
+      .lightbox-close:focus-visible { outline: 2px solid #facc15; outline-offset: 3px; }
+      @media (prefers-reduced-motion: reduce) {
+        .lightbox, .lightbox-inner { transition: none; }
       }
       .browser-screen img {
         width: 100%;
@@ -469,6 +559,15 @@
       </p>
     </footer>
 
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview" aria-hidden="true">
+      <figure class="lightbox-inner">
+        <button id="lightbox-close" class="lightbox-close" type="button" aria-label="Close preview">&times;</button>
+        <img id="lightbox-img" src="" alt="" />
+        <figcaption id="lightbox-cap" class="lightbox-cap"></figcaption>
+      </figure>
+    </div>
+
     <script>
       // Copyright year
       document.getElementById('copyright-year').textContent = new Date().getFullYear();
@@ -500,6 +599,54 @@
           entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
         }, { threshold: 0.15 });
         items.forEach(el => io.observe(el));
+      })();
+
+      // Lightbox: click a browser frame to view the full screenshot
+      (function() {
+        const lb = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        const lbCap = document.getElementById('lightbox-cap');
+        const lbClose = document.getElementById('lightbox-close');
+        if (!lb) return;
+        let lastFocus = null;
+        const hintSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+
+        function open(src, alt, url) {
+          lastFocus = document.activeElement;
+          lbImg.src = src;
+          lbImg.alt = alt || '';
+          lbCap.textContent = url || '';
+          lb.classList.add('is-open');
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+          lbClose.focus();
+        }
+        function close() {
+          lb.classList.remove('is-open');
+          lb.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+
+        document.querySelectorAll('.browser-screen').forEach(screen => {
+          const img = screen.querySelector('img');
+          if (!img) return;
+          // inject the "expand" hover hint
+          const hint = document.createElement('span');
+          hint.className = 'zoom-hint';
+          hint.innerHTML = hintSvg + 'Click to expand';
+          screen.appendChild(hint);
+          // derive the URL shown in the frame's address bar
+          const frame = screen.closest('.browser');
+          const url = frame ? (frame.querySelector('.browser-url')?.textContent.trim() || '') : '';
+          screen.addEventListener('click', () => open(img.src, img.alt, url));
+        });
+
+        lbClose.addEventListener('click', close);
+        lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && lb.classList.contains('is-open')) close();
+        });
       })();
 
       // 3D tilt + parallax on hover
