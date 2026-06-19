@@ -130,9 +130,16 @@
       }
       @layer base {
         @media print {
+          /* Zero the page margin so the browser does not draw its
+             automatic header/footer (date, page title, URL/file path,
+             and page number). Padding restores readable margins. */
+          @page {
+            margin: 0;
+          }
           body {
             font-size: 12pt;
             line-height: 1.4;
+            padding: 0.5in;
           }
           a::after {
             font-size: 10pt;
@@ -783,7 +790,11 @@
       html.dark #thunder-toggle svg { color: #cbd5e1; }
       @media print { #dark-mode-toggle { display: none !important; } }
 
-      /* Dark mode overrides — applied when html.dark is set */
+      /* Dark mode overrides — applied when html.dark is set.
+         Scoped to screen so the printed/PDF resume always uses the
+         light theme (white background, dark text) regardless of the
+         on-screen dark/light setting. */
+      @media screen {
       html.dark { color-scheme: dark; }
       html.dark body { background: #0b1220; color: #e2e8f0; }
 
@@ -853,14 +864,9 @@
       html.dark .section-dot { background: rgba(148, 163, 184, 0.32); }
       html.dark .section-dot.is-active { background: #facc15; box-shadow: 0 0 10px rgba(250, 204, 21, 0.6); }
 
-      /* Print view should stay light no matter what */
-      html.dark .hidden.print\:block,
-      html.dark .hidden.print\:block *,
-      html.dark #print-qr,
-      html.dark #print-qr-code svg { color: initial; background: initial; border-color: initial; }
-
       /* Highlight flash adjustment */
       html.dark .highlight-flash { animation-name: highlightFlashDark; }
+      } /* end @media screen — dark mode overrides do not apply in print */
       @keyframes highlightFlashDark {
         0%   { box-shadow: 0 0 0 0 rgba(250,204,21,0);   background-color: rgba(250,204,21,0); }
         12%  { box-shadow: 0 0 0 10px rgba(250,204,21,0.45); background-color: rgba(250,204,21,0.10); }
