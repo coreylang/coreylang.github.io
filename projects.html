@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="favicon.png">
     <title>Projects — Christopher 'Corey' Lang</title>
-    <meta name="description" content="A showcase of projects built by Christopher 'Corey' Lang — The Status, Home Buyer Nation, AJ Lang Property Management, and the open-source PHP ElevenLabs AI library." />
+    <meta name="description" content="A showcase of projects built by Christopher 'Corey' Lang — The Status, Home Buyer Nation, AJ Lang Property Management, Beacon, and the open-source PHP ElevenLabs AI library." />
     <meta name="author" content="Christopher 'Corey' Lang" />
     <link rel="canonical" href="https://coreylang.github.io/projects.html" />
 
@@ -540,6 +540,42 @@
           </div>
           <a href="https://coreylang.github.io/php-elevenlabs-ai/" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#9333ea">
             View the docs
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ===== Beacon ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#d97706">
+        <div class="tilt-scene order-1">
+          <div class="tilt">
+            <div class="float-badge" style="background:#d97706">📡</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">github.com/coreylang/web-status-endpoint-beacon</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/beacon.png" alt="Beacon uptime monitor GitHub repository" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="order-2">
+          <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#d97706">Open Source · MIT</p>
+          <h2 class="text-3xl font-bold text-gray-900">Beacon</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            A self-contained uptime monitor. Beacon schedules HTTP checks against the URLs you give it, records every result, detects when something goes down (and recovers), and streams the whole thing to a live dashboard over WebSockets — no external services, no API keys.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Per-monitor scheduler with abort-based timeouts and latency measurement.</li>
+            <li>Incident bookkeeping — opens on the first failure, resolves on recovery.</li>
+            <li>WebSocket hub sends each client a full snapshot, then live incremental events.</li>
+            <li>Zero-config SQLite storage (WAL) — clone and run with two commands.</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tech-tag">TypeScript</span><span class="tech-tag">Node.js</span><span class="tech-tag">Express</span><span class="tech-tag">React</span><span class="tech-tag">Vite</span><span class="tech-tag">SQLite</span><span class="tech-tag">WebSocket</span>
+          </div>
+          <a href="https://github.com/coreylang/web-status-endpoint-beacon" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#d97706">
+            View on GitHub
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
