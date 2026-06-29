@@ -139,7 +139,9 @@
           body {
             font-size: 12pt;
             line-height: 1.4;
-            padding: 0.5in;
+            /* No bottom padding: a 0.5in bottom margin can spill past the
+               last page's content edge and force a trailing blank page. */
+            padding: 0.5in 0.5in 0 0.5in;
           }
           a::after {
             font-size: 10pt;
@@ -2244,7 +2246,7 @@
         <section class="max-w-3xl mx-auto p-6">
           <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Professional Experience</h2>
           <div class="mt-4">
-            <h3 class="font-medium">Full-Stack Developer · Home Buyer Nation <span class="text-sm text-gray-600">(2026–Present)</span></h3>
+            <h3 class="font-bold">Full-Stack Developer · Home Buyer Nation <span class="text-sm text-gray-600">(2026–Present)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
               <li>Building a full-featured real estate platform as an alternative to Zillow, enabling users to search, list, and manage residential properties.<br/>
                 <span class="tech-stack text-gray-400 text-xs">[Laravel 11, VueJS, Tailwind CSS, MySQL]</span>
@@ -2258,7 +2260,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Full-Stack Developer · The Status <span class="text-sm text-gray-600">(2026–Present)</span></h3>
+            <h3 class="font-bold">Full-Stack Developer · The Status <span class="text-sm text-gray-600">(2026–Present)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
               <li>Built a real-time order tracking system for service businesses, displaying order status progression on customer-facing TV monitors.<br/>
                 <span class="tech-stack text-gray-400 text-xs">[TypeScript, Express.js, Prisma, MySQL]</span>
@@ -2275,7 +2277,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Senior Software Developer · AFCA <span class="text-sm text-gray-600">(2025–2025)</span></h3>
+            <h3 class="font-bold">Senior Software Developer · AFCA <span class="text-sm text-gray-600">(2025–2025)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
                 <li>Architected and deployed a scalable conversational AI voice call platform leveraging speech recognition APIs for seamless automation.<br/>
                   <span class="tech-stack text-gray-400 text-xs">[Linux, Apache, MySQL PHP, JavaScript, NodeJS, Fastify]</span>
@@ -2298,7 +2300,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Web Developer Engineer · NovaTech <span class="text-sm text-gray-600">(2020–2025)</span></h3>
+            <h3 class="font-bold">Web Developer Engineer · NovaTech <span class="text-sm text-gray-600">(2020–2025)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
               <li>
                 Designed, developed, and maintained the Orion web application—built with Python, CherryPy, and PostgreSQL to configure and manage Orion product hardware servers.<br/>
@@ -2318,7 +2320,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Full Stack Developer · The Lead Group <span class="text-sm text-gray-600">(2020–2020)</span></h3>
+            <h3 class="font-bold">Full Stack Developer · The Lead Group <span class="text-sm text-gray-600">(2020–2020)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
               <li>
                 Developed, and maintained multiple PHP Laravel–based analytical applications to support data-driven decision-making.<br/>
@@ -2335,7 +2337,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Senior Software Developer · AFCA <span class="text-sm text-gray-600">(2011–2020)</span></h3>
+            <h3 class="font-bold">Senior Software Developer · AFCA <span class="text-sm text-gray-600">(2011–2020)</span></h3>
             <ul class="list-disc list-inside list-spaced text-sm mt-1">
               <li>Developed and maintained web applications for both for‑profit and non‑profit law firms, supporting their operational and client service needs.<br/>
                 <span class="tech-stack text-xs text-gray-400">[Linux, Apache, MySQL, PHP, JavaScript, HTML5, CSS3, jQuery]</span>
@@ -2381,7 +2383,7 @@
             </ul>
           </div>
           <div class="mt-4">
-            <h3 class="font-medium">Senior Software Developer · AngellEye <span class="text-sm text-gray-600">(2009–2011)</span></h3>
+            <h3 class="font-bold">Senior Software Developer · AngellEye <span class="text-sm text-gray-600">(2009–2011)</span></h3>
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
               <li>
                 Developed and maintained a wide range of software applications, including legacy systems built with FileMaker Pro.<br/>
@@ -2403,7 +2405,7 @@
             </ul>
           </div>
         </section>
-        <section class="max-w-3xl mx-auto p-6 page-break">
+        <section class="max-w-3xl mx-auto p-6">
           <h2 class="text-xl font-semibold border-b border-gray-300 pb-1">Personal Projects</h2>
           <div class="mt-4">
             <ul class="list-disc list-inside list-spaced mt-1 text-sm">
