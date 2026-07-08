@@ -689,9 +689,45 @@
         </div>
       </section>
 
+      <!-- ===== Job Based System ===== -->
+      <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#d97706">
+        <div class="tilt-scene order-1">
+          <div class="tilt">
+            <div class="float-badge" style="background:#d97706">🔧</div>
+            <div class="browser">
+              <div class="browser-bar">
+                <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+                <div class="browser-url">coreylang.github.io/job-based-system</div>
+              </div>
+              <div class="browser-screen"><img src="screenshots/job-based-system.png" alt="Dispatch work-order management dashboard listing field-service jobs with status and pipeline value" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="order-2">
+          <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#d97706">Open Source · MIT</p>
+          <h2 class="text-3xl font-bold text-gray-900">Dispatch — Job Based System</h2>
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            A job and work-order management system for field-service companies — HVAC, plumbing, electrical, cleaning, auto service. It's a fully static React app that runs entirely in the browser with no backend, so it deploys to GitHub Pages for free while still feeling like real dispatch software.
+          </p>
+          <ul class="feat-list mt-4 space-y-2 text-sm text-gray-700">
+            <li>Dispatch board with live KPIs and an interactive status pipeline (New → Scheduled → In Progress → Completed → Invoiced).</li>
+            <li>Drag-and-drop weekly schedule, customer directory, and a technician roster with capacity gauges.</li>
+            <li>Reports module with colorblind-validated charts for revenue, pipeline, and completion rate.</li>
+            <li>Editable line items, activity timelines, and seed data that all persist to <code>localStorage</code>.</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tech-tag">React</span><span class="tech-tag">Vite</span><span class="tech-tag">React Router</span><span class="tech-tag">Zustand</span><span class="tech-tag">Tailwind CSS</span>
+          </div>
+          <a href="https://coreylang.github.io/job-based-system/" target="_blank" rel="noopener" class="visit-btn mt-6" style="background:#d97706">
+            View the demo
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </section>
+
       <!-- ===== Resume Website ===== -->
       <section class="reveal grid md:grid-cols-2 gap-10 items-center" style="--accent:#2563eb">
-        <div class="tilt-scene order-1">
+        <div class="tilt-scene md:order-2">
           <div class="tilt">
             <div class="float-badge" style="background:#2563eb">📄</div>
             <div class="browser">
@@ -703,7 +739,7 @@
             </div>
           </div>
         </div>
-        <div class="order-2">
+        <div class="md:order-1">
           <p class="text-xs uppercase tracking-widest font-semibold mb-2" style="color:#2563eb">Personal · Open Source</p>
           <h2 class="text-3xl font-bold text-gray-900">Resume Website</h2>
           <p class="mt-3 text-gray-700 leading-relaxed">
